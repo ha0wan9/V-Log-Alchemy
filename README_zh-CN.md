@@ -174,6 +174,12 @@
 
 > **注意**: DCTL 是 DaVinci Resolve Studio 付费版独有的功能。
 
+### 4. Adobe Camera RAW / Lightroom 用户 (实验性)
+
+如果你能容忍一部分色差的话，你可以在Adobe Camera RAW导入的时候，选择“配置文件 (Profile)” > “机型匹配 (Camera Matching)”中的V-Log预设，然后再应用本仓库的`.cube`文件。
+
+这样做的色彩会有一点偏差但不会太大，后期可以自己再调整一下。这是一种“权宜之计”，因为ACR/LR对视频LUT的支持不如视频剪辑软件原生。
+
 ---
 
 ## 🧮 核心算法 (The Math)

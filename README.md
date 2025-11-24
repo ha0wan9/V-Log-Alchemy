@@ -174,6 +174,12 @@ This gives you the flexibility to swap film simulations after shooting.
 
 > **Note**: DCTL is a feature exclusive to the paid DaVinci Resolve Studio version.
 
+### 4. For Adobe Camera RAW / Lightroom Users (Experimental)
+
+If you can tolerate some color deviation, you can select the V-Log preset from "Profile" > "Camera Matching" in Adobe Camera RAW during import, and then apply the `.cube` file from this repository.
+
+This approach might introduce a slight color shift, but it won't be drastic and can be fine-tuned later in post-production. Consider this a "workaround," as ACR/LR's support for video LUTs is not as native as dedicated video editing software.
+
 ---
 
 ## 🧮 The Math
