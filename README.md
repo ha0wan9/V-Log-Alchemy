@@ -132,6 +132,16 @@ The LUTs in this repository are designed exclusively for **Panasonic V-Log / V-G
 
 ---
 
+## 📺 Community Showcase
+
+Check out this amazing side-by-side comparison (Fuji X100V vs. Lumix S5IIX) using **V-Log Alchemy**.
+
+Special thanks to **Josef** from **[DIE LICHTFÆNGER ACADEMY](https://www.youtube.com/@dielichtfaenger_academy)** for testing the workflow and providing this footage!
+
+[![X100V vs S5IIX Comparison](https://img.youtube.com/vi/LX-2BNarGq4/maxresdefault.jpg)](https://youtu.be/LX-2BNarGq4)
+
+---
+
 ## 📸 Sample Images
 
 Here are some sample images showcasing the LUT effects:

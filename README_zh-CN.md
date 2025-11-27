@@ -132,6 +132,16 @@
 
 ---
 
+## 📺 社区作品展示 (Community Showcase)
+
+这是使用 **V-Log Alchemy** 完成的对比视频 (富士 X100V vs. Lumix S5IIX)。
+
+特别感谢来自 **[DIE LICHTFÆNGER ACADEMY](https://www.youtube.com/@dielichtfaenger_academy)** 的 **Josef** 测试并提供了这段素材！
+
+[![X100V vs S5IIX Comparison](https://img.youtube.com/vi/LX-2BNarGq4/maxresdefault.jpg)](https://youtu.be/LX-2BNarGq4)
+
+---
+
 ## 📸 样片展示 (Sample Images)
 
 以下是一些展示 LUT 效果的样片图片：
