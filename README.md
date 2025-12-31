@@ -1,8 +1,17 @@
 # 🧪 V-Log Alchemy (Lumix Body Snatcher)
 
-[**中文版 (Chinese Version)**](./README_zh-CN.md)
+[English](README.md) | [简体中文](README_zh-CN.md)
 
 > **Turn your Panasonic Lumix camera into a Fujifilm GFX, Leica, ARRI, and more using precise ACES inverse engineering.**
+
+---
+
+## 🔗 Related Projects
+
+### Raw-Alchemy
+**[Raw-Alchemy](https://github.com/shenmintao/Raw-Alchemy)** - A specialized tool for applying LUTs to RAW images.
+
+If you want to apply these cinematic LUTs directly to your RAW photos (DNG, CR2, ARW, etc.) without going through video editing software, check out Raw-Alchemy. It's designed specifically for processing RAW images with LUT transformations while preserving maximum image quality.
 
 ---
 

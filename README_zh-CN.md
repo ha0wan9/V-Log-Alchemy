@@ -1,8 +1,17 @@
 # 🧪 V-Log Alchemy (Lumix Body Snatcher)
 
-> **Turn your Panasonic Lumix camera into a Fujifilm GFX, Leica, ARRI, and more using precise ACES inverse engineering.**
->
-> 通过精确的 ACES 逆向工程，将松下 Lumix 相机（S1R II/S5M2 等）的色彩科学“数学级”转换为富士 GFX、徕卡、ARRI 等顶级电影机/中画幅风格。
+[English](README.md)
+
+> 通过精确的 ACES 逆向工程，将松下 Lumix 相机（S1R II/S5M2 等）的色彩科学"数学级"转换为富士 GFX、徕卡、ARRI 等顶级电影机/中画幅风格。
+
+---
+
+## 🔗 相关项目 (Related Projects)
+
+### Raw-Alchemy
+**[Raw-Alchemy](https://gitee.com/MinQ/Raw-Alchemy)** - 专门给 RAW 图片套 LUT 的工具。
+
+如果你想将这些电影级 LUT 直接应用到 RAW 照片（DNG、CR2、ARW 等）而不需要通过视频编辑软件，可以试试 Raw-Alchemy。它专为处理 RAW 图像的 LUT 转换而设计，同时保留最大的图像质量。
 
 ---
 
@@ -211,5 +220,5 @@
 ---
 
 ## ⚠️ 注意事项 (Disclaimer)
-1. **物理限制**：虽然我们在数学上对齐了色彩空间，但不同传感器的 CFA (色彩滤镜阵列) 光谱响应特性不同。所谓的“同色异谱”现象意味着在某些极端光源下（如霓虹灯），松下的表现可能仍与原机有细微差异。
+1. **物理限制**：虽然我们在数学上对齐了色彩空间，但不同传感器的 CFA (色彩滤镜阵列) 光谱响应特性不同。所谓的"同色异谱"现象意味着在某些极端光源下（如霓虹灯），松下的表现可能仍与原机有细微差异。
 2. **非官方**：本项目与 Panasonic, Fujifilm, Leica 无官方关联。
