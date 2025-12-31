@@ -1,6 +1,6 @@
 # 🧪 V-Log Alchemy (Lumix Body Snatcher)
 
-[English](README.md)
+[English](README.md) | [简体中文](README_zh-CN.md)
 
 > 通过精确的 ACES 逆向工程，将松下 Lumix 相机（S1R II/S5M2 等）的色彩科学"数学级"转换为富士 GFX、徕卡、ARRI 等顶级电影机/中画幅风格。
 
