@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README_zh-CN.md)
 
-> 通过精确的 ACES 逆向工程，将松下 Lumix 相机（S1R II/S5M2 等）的色彩科学"数学级"转换为富士 GFX、徕卡、ARRI 等顶级电影机/中画幅风格。
+> 通过精确的色彩科学逆向工程，将松下 Lumix 相机（S1R II/S5M2 等）的色彩科学转换为富士 GFX、徕卡、哈苏 Phocus、ARRI 等顶级电影机/中画幅风格。
 
 ---
 
@@ -19,12 +19,12 @@
 
 本项目旨在通过数学手段，打破相机品牌的“色彩壁垒”。
 
-许多相机厂商（如 Fujifilm, Leica）拥有极具特色的色彩科学（Color Science），但它们的官方 LUT 通常只接受自家相机的 Log 输入。本项目通过 **ACES (Academy Color Encoding System)** 流程进行逆向工程：
+许多相机厂商（如 Fujifilm、Leica、Hasselblad）拥有极具特色的色彩科学（Color Science），但它们的官方 LUT 或渲染流程通常只接受自家相机的输入。本项目通过 **ACES (Academy Color Encoding System)** 流程以及已恢复的厂商渲染行为进行逆向工程：
 
 1.  将 Panasonic **V-Log/V-Gamut** 转换到标准的 **ACES AP0 (Linear)**。
 2.  使用自定义编写的 **DCTL (DaVinci Color Transform Language)** 或高精度转换矩阵，执行目标相机 IDT (Input Device Transform) 的**逆运算**。
-3.  将信号伪装成目标相机的原生 Log/Gamut（如 F-Log2C, Leica Log）。
-4.  应用目标厂商的官方色彩 LUT。
+3.  将信号伪装成目标相机的原生 Log/Gamut 或已恢复的内部 RGB 空间（如 F-Log2C、Leica Log、Hasselblad RGB）。
+4.  应用目标厂商的官方色彩 LUT 或已恢复的渲染转换。
 
 最终生成的 `.cube` 文件可直接导入松下相机（如 S1R II, S1H, S5系列）进行机内实时监看，或在后期流程中使用。
 
@@ -87,6 +87,22 @@
 *   **`L-Log_to_Natural_VLog.cube`**
     *   **风格**: Leica Natural (自然)。
     *   **特点**: 相比 Classic 更加现代和中性。保留了徕卡的高光滚降特性，但暗部细节更多，对比度更温和，色彩过渡非常平滑“高级”，适合时尚、人像或日常记录。
+
+---
+
+### 🟧 Hasselblad Phocus (Phocus X2D Core)
+*基于已恢复的 Hasselblad Phocus 4.0.1 X2D 渲染路径，v1.1 新增。*
+
+*   **`Luts/Hasselblad/Hasselblad_Standard_Phocus_X2D_VLog.cube`**
+    *   **风格**: Hasselblad Standard。
+    *   **特点**: X2D Standard ColorCorrect 加实测 Standard film curve，从 Panasonic V-Log/V-Gamut 映射而来。
+*   **`Luts/Hasselblad/Hasselblad_Nature_Phocus_X2D_VLog.cube`**
+    *   **风格**: Hasselblad Nature。
+    *   **特点**: Standard 色彩渲染加实测 Phocus Nature RGB gradation table，色彩比 Standard 略鲜艳。
+*   **65 点版本**也已包含，用于更高精度的后期流程：`Hasselblad_Standard_Phocus_X2D_VLog_65.cube` 和 `Hasselblad_Nature_Phocus_X2D_VLog_65.cube`。
+*   **不单独发布**: `Portrait` 和 `Product`，因为实测颜色转换与 `Standard` 一致；它们在 Phocus 里的差异主要是 3D LUT 无法编码的锐化/降噪行为。
+
+恢复出的处理路径见 [`Luts/Hasselblad/README.md`](Luts/Hasselblad/README.md)。
 
 ---
 
@@ -171,7 +187,7 @@
 1.  下载 `.cube` 文件。
 2.  将它们复制到相机的 SD 卡中（或使用 Lumix Lab App）。
 3.  将它们加载到 LUT 库中。
-4.  即可直接拍摄带有富士风格的 JPEG 或视频！
+4.  即可直接拍摄带有所选风格的 JPEG 或视频。
 
 ### 2. 标准方式 (DaVinci Resolve 免费版)
 适用于没有 Studio 版本、希望在后期制作中应用风格的用户：
@@ -186,10 +202,10 @@
 如果您希望在后期制作中获得完全控制：
 
 1.  使用提供的 `.dctl` 文件。
-2.  工作流程: V-Log -> [CST 至 ACES (AP0), 线性] -> [我的 DCTL] -> [富士官方 LUT]。
+2.  工作流程: V-Log -> [CST 至 ACES (AP0), 线性] -> [我的 DCTL] -> [目标 LUT]；对于哈苏 Phocus 这类非 ACES 路径，也可以直接使用仓库中生成好的 `.cube` 文件。
 3.  在色彩空间转换 (CST) 节点上禁用 **色调映射 (Tone Mapping)** 和 **白点自适应 (White Point Adaptation)**。
 
-这样您就可以在拍摄后灵活地更换胶片模拟。
+这样您就可以在拍摄后灵活地更换风格。
 
 > **注意**: DCTL 是 DaVinci Resolve Studio 付费版独有的功能。
 
@@ -217,8 +233,23 @@
 
 详细的 DCTL 代码请查看 `DCTL` 文件夹。
 
+Hasselblad Phocus LUT 使用另一条已恢复的 ISP 路径：
+
+```text
+V-Log / V-Gamut
+  -> linear V-Gamut
+  -> XYZ D65
+  -> Bradford D50 adaptation
+  -> Hasselblad RGB
+  -> Phocus X2D Standard ColorCorrect
+  -> Phocus Standard film curve
+  -> optional Phocus style gradation
+```
+
+这条路径由 [`Tools/generate_hasselblad_vlog.py`](Tools/generate_hasselblad_vlog.py) 生成。
+
 ---
 
 ## ⚠️ 注意事项 (Disclaimer)
 1. **物理限制**：虽然我们在数学上对齐了色彩空间，但不同传感器的 CFA (色彩滤镜阵列) 光谱响应特性不同。所谓的"同色异谱"现象意味着在某些极端光源下（如霓虹灯），松下的表现可能仍与原机有细微差异。
-2. **非官方**：本项目与 Panasonic, Fujifilm, Leica 无官方关联。
+2. **非官方**：本项目与 Panasonic、Fujifilm、Leica、Hasselblad、ARRI、Nikon、RED 以及其他提及的相机厂商无官方关联。

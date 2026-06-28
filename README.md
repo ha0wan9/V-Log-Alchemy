@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README_zh-CN.md)
 
-> **Turn your Panasonic Lumix camera into a Fujifilm GFX, Leica, ARRI, and more using precise ACES inverse engineering.**
+> **Turn your Panasonic Lumix camera into a Fujifilm GFX, Leica, Hasselblad Phocus, ARRI, and more using precise color science reverse engineering.**
 
 ---
 
@@ -19,12 +19,12 @@ If you want to apply these cinematic LUTs directly to your RAW photos (DNG, CR2,
 
 This project aims to break the "color barrier" between camera brands through mathematical means.
 
-Many camera manufacturers (like Fujifilm, Leica) have distinctive color science, but their official LUTs typically only accept Log input from their own cameras. This project reverse-engineers this process using the **ACES (Academy Color Encoding System)** workflow:
+Many camera manufacturers (like Fujifilm, Leica, and Hasselblad) have distinctive color science, but their official LUTs and rendering pipelines typically only accept input from their own cameras. This project reverse-engineers these paths using the **ACES (Academy Color Encoding System)** workflow and recovered vendor rendering behavior:
 
 1.  Convert Panasonic **V-Log/V-Gamut** to the standard **ACES AP0 (Linear)**.
 2.  Use custom-written **DCTL (DaVinci Color Transform Language)** or high-precision matrices to perform the **inverse operation** of the target camera's IDT (Input Device Transform).
-3.  Disguise the signal as the target camera's native Log/Gamut (e.g., F-Log2C, Leica Log).
-4.  Apply the target manufacturer's official color LUT.
+3.  Disguise the signal as the target camera's native Log/Gamut or recovered internal RGB space (e.g., F-Log2C, Leica Log, Hasselblad RGB).
+4.  Apply the target manufacturer's official color LUT or the recovered rendering transform.
 
 The resulting `.cube` files can be directly loaded into Panasonic cameras (like S1R II, S1H, S5 series) for real-time in-camera monitoring or used in post-production.
 
@@ -87,6 +87,22 @@ The LUTs in this repository are designed exclusively for **Panasonic V-Log / V-G
 *   **`L-Log_to_Natural_VLog.cube`**
     *   **Style**: Leica Natural.
     *   **Features**: More modern and neutral compared to Classic. Retains Leica's highlight roll-off but with more shadow detail, milder contrast, and exceptionally smooth, 'premium' color transitions. Suitable for fashion, portraits, or daily shooting.
+
+---
+
+### 🟧 Hasselblad Phocus (Phocus X2D Core)
+*Based on the recovered Hasselblad Phocus 4.0.1 X2D rendering path, published in v1.1.*
+
+*   **`Luts/Hasselblad/Hasselblad_Standard_Phocus_X2D_VLog.cube`**
+    *   **Style**: Hasselblad Standard.
+    *   **Features**: X2D Standard ColorCorrect plus the captured Standard film curve, mapped from Panasonic V-Log/V-Gamut.
+*   **`Luts/Hasselblad/Hasselblad_Nature_Phocus_X2D_VLog.cube`**
+    *   **Style**: Hasselblad Nature.
+    *   **Features**: Standard color rendering plus the captured Phocus Nature RGB gradation table. Slightly richer color than Standard.
+*   **65-point versions** are also included for higher-precision post workflows: `Hasselblad_Standard_Phocus_X2D_VLog_65.cube` and `Hasselblad_Nature_Phocus_X2D_VLog_65.cube`.
+*   **Not emitted**: `Portrait` and `Product`, because their captured color transform matches `Standard`; their Phocus preset differences are sharpening/noise behavior that a 3D LUT cannot encode.
+
+See [`Luts/Hasselblad/README.md`](Luts/Hasselblad/README.md) for the recovered pipeline.
 
 ---
 
@@ -171,7 +187,7 @@ I have included pre-generated 33-Point Cube LUTs in the repo.
 1.  Download the `.cube` files.
 2.  Copy them to your camera's SD card (or use the Lumix Lab App).
 3.  Load them into the LUT Library.
-4.  Shoot straight-out-of-camera JPEGs or Video with the Fuji look baked in!
+4.  Shoot straight-out-of-camera JPEGs or video with the selected look baked in.
 
 ### 2. The Standard Way (For DaVinci Resolve Free)
 For users without the Studio version who want to apply the look in post-production:
@@ -186,10 +202,10 @@ For users without the Studio version who want to apply the look in post-producti
 If you want full control in post:
 
 1.  Use the provided `.dctl` file.
-2.  Workflow: V-Log -> [CST to ACES (AP0), Linear] -> [My DCTL] -> [Official Fuji LUT].
+2.  Workflow: V-Log -> [CST to ACES (AP0), Linear] -> [My DCTL] -> [Target LUT], or use the provided `.cube` files directly for recovered non-ACES paths such as Hasselblad Phocus.
 3.  disable Tone Mapping and White Point Adaptation on CST Node.
 
-This gives you the flexibility to swap film simulations after shooting.
+This gives you the flexibility to swap looks after shooting.
 
 > **Note**: DCTL is a feature exclusive to the paid DaVinci Resolve Studio version.
 
@@ -217,8 +233,23 @@ The core of this project is a precise inverse matrix. Taking **ACES AP0 to F-Log
 
 For detailed DCTL code, please see the `DCTL` folder.
 
+The Hasselblad Phocus LUTs use a separate recovered ISP path:
+
+```text
+V-Log / V-Gamut
+  -> linear V-Gamut
+  -> XYZ D65
+  -> Bradford D50 adaptation
+  -> Hasselblad RGB
+  -> Phocus X2D Standard ColorCorrect
+  -> Phocus Standard film curve
+  -> optional Phocus style gradation
+```
+
+That path is generated by [`Tools/generate_hasselblad_vlog.py`](Tools/generate_hasselblad_vlog.py).
+
 ---
 
 ## ⚠️ Disclaimer
 1. **Physical Limitations**: While we have mathematically aligned the color spaces, the spectral response of different sensor CFAs (Color Filter Arrays) varies. This phenomenon, known as metamerism, means that under certain extreme lighting conditions (e.g., neon lights), the Panasonic's rendering may still have subtle differences from the original camera.
-2. **Unofficial**: This project is not officially affiliated with Panasonic, Fujifilm, or Leica.
+2. **Unofficial**: This project is not officially affiliated with Panasonic, Fujifilm, Leica, Hasselblad, ARRI, Nikon, RED, or other referenced camera manufacturers.
