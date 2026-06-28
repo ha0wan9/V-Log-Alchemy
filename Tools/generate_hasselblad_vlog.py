@@ -169,6 +169,11 @@ def main():
     parser.add_argument("--sizes", default="", help="Comma-separated LUT sizes for --all-styles, default: 33,65")
     parser.add_argument("--exposure-scale", type=float, default=1.0)
     parser.add_argument(
+        "--include-color-correct",
+        action="store_true",
+        help="Experimental: include the captured WB-dependent Phocus ColorCorrect/CbCr stage.",
+    )
+    parser.add_argument(
         "--output",
         default="",
         help="Output path for one style. Ignored with --all-styles.",
@@ -178,8 +183,11 @@ def main():
 
     phocus = load_phocus_module()
     artifact = json.loads(Path(args.artifact).read_text(encoding="utf-8"))
-    params = phocus.load_params(artifact["set_color_correct_meta"])
-    cc_texture = phocus.load_float4_texture(artifact["color_map_float4_256x256"])
+    params = None
+    cc_texture = None
+    if args.include_color_correct:
+        params = phocus.load_params(artifact["set_color_correct_meta"])
+        cc_texture = phocus.load_float4_texture(artifact["color_map_float4_256x256"])
     film_curve = phocus.load_film_curve(artifact["film_curve_float_65536"])
     vgamut_to_hass = build_vgamut_to_hasselblad_rgb_matrix()
 
@@ -196,8 +204,9 @@ def main():
             vgamut_lin = [vlog_to_linear(c) for c in vlog_rgb]
             hass_rgb = mat_vec(vgamut_to_hass, vgamut_lin)
             hass_rgb = [max(0.0, c * args.exposure_scale) for c in hass_rgb]
-            corrected = phocus.apply_color_correct(hass_rgb, params, cc_texture)
-            rendered = phocus.apply_film_curve(corrected, film_curve)
+            if args.include_color_correct:
+                hass_rgb = phocus.apply_color_correct(hass_rgb, params, cc_texture)
+            rendered = phocus.apply_film_curve(hass_rgb, film_curve)
             return apply_style_gradation(rendered, style_curve)
 
         for size in sizes:
@@ -205,7 +214,8 @@ def main():
                 out_path = Path(args.output)
             else:
                 out_path = output_path_for_style(Path(args.output_dir), style, size)
-            title = f"Hasselblad {style} Phocus X2D from V-Log"
+            path_desc = "ColorCorrect" if args.include_color_correct else "Curve"
+            title = f"Hasselblad {style} Phocus X2D {path_desc} from V-Log"
             write_cube(out_path, title, size, transform)
             print(out_path)
 

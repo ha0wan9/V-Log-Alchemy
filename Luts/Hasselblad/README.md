@@ -1,7 +1,7 @@
 # Hasselblad Phocus LUTs
 
-These LUTs are generated for Panasonic V-Log / V-Gamut input from the recovered
-Phocus 4.0.1 X2D Standard rendering path:
+These LUTs are generated for Panasonic V-Log / V-Gamut input from the stable
+film-curve/gradation portion of the recovered Phocus 4.0.1 X2D rendering path:
 
 ```text
 V-Log / V-Gamut
@@ -9,14 +9,13 @@ V-Log / V-Gamut
   -> XYZ D65
   -> Bradford D50 adaptation
   -> Hasselblad RGB
-  -> Phocus X2D Standard ColorCorrect
   -> Phocus Standard film curve
   -> optional Phocus style gradation
 ```
 
 Included color styles:
 
-- `Standard`: X2D Standard ColorCorrect plus the captured Standard film curve.
+- `Standard`: Hasselblad RGB plus the captured Standard film curve.
   It is described against Hasselblad's Natural Colour Solution (HNCS): natural,
   true-to-life colour, smooth tonal transitions, restrained but rich saturation,
   and film-like contrast.
@@ -24,6 +23,11 @@ Included color styles:
   `SetFilmAndGradation` while switching the preset in Phocus. It keeps the
   HNCS-like Standard foundation while adding a fuller tone response for outdoor
   colour and saturated scenes.
+
+The recovered Phocus RAW `ColorCorrect` / CbCr stage is not included in these
+stable LUTs. It was captured separately and confirmed to change with white
+balance, so it remains an experimental path available from
+`Tools/generate_hasselblad_vlog.py --include-color-correct`.
 
 Style reference:
 

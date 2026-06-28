@@ -91,15 +91,16 @@
 ---
 
 ### 🟧 Hasselblad Phocus (Phocus X2D Core)
-*基于已恢复的 Hasselblad Phocus 4.0.1 X2D 渲染路径，并按 Hasselblad Natural Colour Solution (HNCS) 官方说明来描述风格，v1.1 新增。*
+*基于 Hasselblad Phocus 4.0.1 X2D 中稳定的 film curve / gradation 路径，并按 Hasselblad Natural Colour Solution (HNCS) 官方说明来描述风格，v1.1 新增。*
 
 *   **`Luts/Hasselblad/Hasselblad_Standard_Phocus_X2D_VLog.cube`**
     *   **风格**: Hasselblad Standard。
-    *   **特点**: 自然、真实、色调过渡平滑，饱和度克制但不寡淡，并带有胶片式对比。它对应 Phocus/HNCS 的基础取向：在混合题材中保持可靠色彩，不为了某一类题材牺牲其他颜色。
+    *   **特点**: 将 V-Log/V-Gamut 映射到 Hasselblad RGB 后，应用实测 Phocus Standard film curve，获得自然、真实、平滑过渡、克制但丰富的饱和度和胶片式对比。
 *   **`Luts/Hasselblad/Hasselblad_Nature_Phocus_X2D_VLog.cube`**
     *   **风格**: Hasselblad Nature。
-    *   **特点**: 以 Standard 色彩为基础，叠加实测 Phocus Nature RGB gradation table。它仍保留 HNCS 对平滑过渡和可信色彩的强调，但在户外色彩和高饱和场景中给出更饱满的影调响应。
+    *   **特点**: 以 Standard 曲线为基础，叠加实测 Phocus Nature RGB gradation table。它仍保留 HNCS 对平滑过渡和可信色彩的强调，但在户外色彩和高饱和场景中给出更饱满的影调响应。
 *   **65 点版本**也已包含，用于更高精度的后期流程：`Hasselblad_Standard_Phocus_X2D_VLog_65.cube` 和 `Hasselblad_Nature_Phocus_X2D_VLog_65.cube`。
+*   **稳定 LUT 不包含**: Phocus RAW `ColorCorrect` / CbCr table。它们已经确认会随白平衡变化，因此暂时保留为实验研究路径，不作为默认 V-Log LUT。
 *   **不单独发布**: `Portrait` 和 `Product`，因为实测颜色转换与 `Standard` 一致；它们在 Phocus 里的差异主要是 3D LUT 无法编码的锐化/降噪行为。
 
 风格参考：[Hasselblad Natural Colour Solution](https://www.hasselblad.com/learn/hasselblad-natural-colour-solution/)。恢复出的处理路径见 [`Luts/Hasselblad/README.md`](Luts/Hasselblad/README.md)。
@@ -233,7 +234,7 @@
 
 详细的 DCTL 代码请查看 `DCTL` 文件夹。
 
-Hasselblad Phocus LUT 使用另一条已恢复的 ISP 路径：
+Hasselblad Phocus LUT 使用已恢复路径中稳定的部分：
 
 ```text
 V-Log / V-Gamut
@@ -241,13 +242,13 @@ V-Log / V-Gamut
   -> XYZ D65
   -> Bradford D50 adaptation
   -> Hasselblad RGB
-  -> Phocus X2D Standard ColorCorrect
   -> Phocus Standard film curve
   -> optional Phocus style gradation
 ```
 
 这条路径由 [`Tools/generate_hasselblad_vlog.py`](Tools/generate_hasselblad_vlog.py) 生成。
 这里对哈苏风格的描述遵循 HNCS 对准确色彩、平滑明暗/色彩过渡、肤色连续性、胶片式对比，以及从拍摄到 Phocus 后期一致性的强调。
+已恢复的 Phocus `ColorCorrect` / CbCr stage 仍可通过生成器的实验参数 `--include-color-correct` 使用，但它不进入稳定发布版，因为它会随白平衡变化。
 
 ---
 
