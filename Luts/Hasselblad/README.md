@@ -17,8 +17,17 @@ V-Log / V-Gamut
 Included color styles:
 
 - `Standard`: X2D Standard ColorCorrect plus the captured Standard film curve.
+  It is described against Hasselblad's Natural Colour Solution (HNCS): natural,
+  true-to-life colour, smooth tonal transitions, restrained but rich saturation,
+  and film-like contrast.
 - `Nature`: Standard plus the Phocus Nature RGB gradation table captured from
-  `SetFilmAndGradation` while switching the preset in Phocus.
+  `SetFilmAndGradation` while switching the preset in Phocus. It keeps the
+  HNCS-like Standard foundation while adding a fuller tone response for outdoor
+  colour and saturated scenes.
+
+Style reference:
+
+- https://www.hasselblad.com/learn/hasselblad-natural-colour-solution/
 
 Generated files:
 
