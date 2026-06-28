@@ -13,7 +13,7 @@ DEFAULT_ARTIFACT = PHOCUS_REVERSE / "hasselblad_x2d100c_standard_cc.json"
 DEFAULT_OUTPUT_DIR = Path(r"E:\V-Log-Alchemy\Luts\Hasselblad")
 SCRIPT_DIR = Path(__file__).resolve().parent
 NATURE_GRADATION_U16 = SCRIPT_DIR / "hasselblad_nature_gradation_u16.bin"
-COLOR_STYLES = ("Standard", "Nature", "Portrait", "Product")
+COLOR_STYLES = ("Standard", "Nature")
 
 
 def load_phocus_module():
