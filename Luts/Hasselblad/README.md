@@ -17,7 +17,8 @@ V-Log / V-Gamut
 Included color styles:
 
 - `Standard`: X2D Standard ColorCorrect plus the captured Standard film curve.
-- `Nature`: Standard plus the Phocus Nature RGB gradation curve.
+- `Nature`: Standard plus the Phocus Nature RGB gradation table captured from
+  `SetFilmAndGradation` while switching the preset in Phocus.
 - `Portrait`: color transform matches Standard; the Phocus preset difference is
   sharpening/noise behavior, which a 3D LUT cannot encode.
 - `Product`: color transform matches Standard; the Phocus preset difference is
