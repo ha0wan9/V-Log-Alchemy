@@ -91,16 +91,16 @@
 ---
 
 ### 🟧 Hasselblad Phocus (Phocus X2D Core)
-*基于 Hasselblad Phocus 4.0.1 X2D 中稳定的 film curve / gradation 路径，并按 Hasselblad Natural Colour Solution (HNCS) 官方说明来描述风格，v1.1 新增。*
+*基于 Hasselblad Phocus 4.0.1 X2D 已恢复的渲染路径（含日光色彩校正阶段），并按 Hasselblad Natural Colour Solution (HNCS) 官方说明来描述风格，v1.2 更新。*
 
 *   **`Luts/Hasselblad/Hasselblad_Standard_Phocus_X2D_VLog.cube`**
     *   **风格**: Hasselblad Standard。
-    *   **特点**: 将 V-Log/V-Gamut 映射到 Hasselblad RGB 后，应用实测 Phocus Standard film curve，获得自然、真实、平滑过渡、克制但丰富的饱和度和胶片式对比。
+    *   **特点**: 将 V-Log/V-Gamut 映射到 Hasselblad RGB 后，应用实测的日光 Phocus `ColorCorrect` CbCr 阶段（还原哈苏真正的色彩分离）、高光滚降，以及 Phocus Standard film curve，获得自然、真实、平滑过渡、克制但丰富的饱和度和胶片式对比。
 *   **`Luts/Hasselblad/Hasselblad_Nature_Phocus_X2D_VLog.cube`**
     *   **风格**: Hasselblad Nature。
-    *   **特点**: 以 Standard 曲线为基础，叠加实测 Phocus Nature RGB gradation table。它仍保留 HNCS 对平滑过渡和可信色彩的强调，但在户外色彩和高饱和场景中给出更饱满的影调响应。
+    *   **特点**: 以 Standard 为基础，叠加实测 Phocus Nature RGB gradation table。它仍保留 HNCS 对平滑过渡和可信色彩的强调，但在户外色彩和高饱和场景中给出更饱满的影调响应。
 *   **65 点版本**也已包含，用于更高精度的后期流程：`Hasselblad_Standard_Phocus_X2D_VLog_65.cube` 和 `Hasselblad_Nature_Phocus_X2D_VLog_65.cube`。
-*   **稳定 LUT 不包含**: Phocus RAW `ColorCorrect` / CbCr table。它们已经确认会随白平衡变化，因此暂时保留为实验研究路径，不作为默认 V-Log LUT。
+*   **日光烘焙**: Phocus `ColorCorrect` / CbCr 阶段会随白平衡变化。发布的 LUT 使用日光表（同时覆盖阴天/阴影区间）；钨丝灯和暖光的色彩科学可通过 `Tools/generate_hasselblad_vlog.py --include-color-correct` 生成，但不单独发布为 LUT。
 *   **不单独发布**: `Portrait` 和 `Product`，因为实测颜色转换与 `Standard` 一致；它们在 Phocus 里的差异主要是 3D LUT 无法编码的锐化/降噪行为。
 
 风格参考：[Hasselblad Natural Colour Solution](https://www.hasselblad.com/learn/hasselblad-natural-colour-solution/)。恢复出的处理路径见 [`Luts/Hasselblad/README.md`](Luts/Hasselblad/README.md)。
@@ -234,7 +234,7 @@
 
 详细的 DCTL 代码请查看 `DCTL` 文件夹。
 
-Hasselblad Phocus LUT 使用已恢复路径中稳定的部分：
+Hasselblad Phocus LUT 使用已恢复路径（含日光色彩校正阶段）：
 
 ```text
 V-Log / V-Gamut
@@ -242,13 +242,15 @@ V-Log / V-Gamut
   -> XYZ D65
   -> Bradford D50 adaptation
   -> Hasselblad RGB
+  -> Phocus daylight CbCr ColorCorrect
+  -> highlight rolloff
   -> Phocus Standard film curve
   -> optional Phocus style gradation
 ```
 
 这条路径由 [`Tools/generate_hasselblad_vlog.py`](Tools/generate_hasselblad_vlog.py) 生成。
 这里对哈苏风格的描述遵循 HNCS 对准确色彩、平滑明暗/色彩过渡、肤色连续性、胶片式对比，以及从拍摄到 Phocus 后期一致性的强调。
-已恢复的 Phocus `ColorCorrect` / CbCr stage 仍可通过生成器的实验参数 `--include-color-correct` 使用，但它不进入稳定发布版，因为它会随白平衡变化。
+Phocus `ColorCorrect` / CbCr 阶段会随白平衡变化；发布的 LUT 烘焙进日光表（同时覆盖阴天/阴影），钨丝灯和暖光的实测数据仍可通过生成器的 `--include-color-correct` 参数使用。
 
 ---
 
