@@ -112,6 +112,27 @@ def clamp01(x):
     return max(0.0, min(1.0, x))
 
 
+def highlight_rolloff(rgb, knee, ceiling=1.0):
+    # Reinhard-style shoulder applied to render-linear RGB before the film curve.
+    # Values at or below `knee` pass through unchanged (C1-continuous at the knee,
+    # slope 1). Above the knee the excess is compressed as t/(t+span) so the output
+    # asymptotes to `ceiling` without ever reaching it. Unlike an exponential
+    # shoulder, this decays slowly enough to keep a monotonic gradient across
+    # V-Log's ~46x highlight range, so bright values stay distinct instead of
+    # collapsing to a flat plateau.
+    span = ceiling - knee
+    if span <= 0.0:
+        return [min(c, ceiling) for c in rgb]
+    out = []
+    for c in rgb:
+        if c <= knee:
+            out.append(c)
+        else:
+            t = c - knee
+            out.append(knee + span * (t / (t + span)))
+    return out
+
+
 def load_u16_curve(path):
     data = Path(path).read_bytes()
     values = struct.unpack("<" + "H" * (len(data) // 2), data)
@@ -169,6 +190,17 @@ def main():
     parser.add_argument("--sizes", default="", help="Comma-separated LUT sizes for --all-styles, default: 33,65")
     parser.add_argument("--exposure-scale", type=float, default=1.0)
     parser.add_argument(
+        "--highlight-rolloff",
+        action="store_true",
+        help="Apply a smooth highlight shoulder before the film curve instead of hard-clipping to white.",
+    )
+    parser.add_argument(
+        "--rolloff-knee",
+        type=float,
+        default=0.5,
+        help="Render-linear value where the highlight shoulder starts (default 0.5).",
+    )
+    parser.add_argument(
         "--include-color-correct",
         action="store_true",
         help="Experimental: include the captured WB-dependent Phocus ColorCorrect/CbCr stage.",
@@ -206,6 +238,8 @@ def main():
             hass_rgb = [max(0.0, c * args.exposure_scale) for c in hass_rgb]
             if args.include_color_correct:
                 hass_rgb = phocus.apply_color_correct(hass_rgb, params, cc_texture)
+            if args.highlight_rolloff:
+                hass_rgb = highlight_rolloff(hass_rgb, args.rolloff_knee)
             rendered = phocus.apply_film_curve(hass_rgb, film_curve)
             return apply_style_gradation(rendered, style_curve)
 
