@@ -1,0 +1,94 @@
+{
+  "camera": "Panasonic DC-S1RM2 / S1RII",
+  "standard_raw": {
+    "file": "P1013120.RW2",
+    "iso": 4000,
+    "shutter_seconds": 0.016666666666666666,
+    "aperture": 4.0,
+    "timestamp": "2025-11-28T19:31:16",
+    "silkypix_export": "P1013120_silkypix_panasonic_standard_matched_16bit_srgb.tif"
+  },
+  "native_vlog_raw": {
+    "file": "P1013121.RW2",
+    "iso": 5000,
+    "shutter_seconds": 0.016666666666666666,
+    "aperture": 4.0,
+    "timestamp": "2025-11-28T19:31:26",
+    "silkypix_export": "P1013121_silkypix_panasonic_vlog_16bit_srgb.tif"
+  },
+  "source_shape_rgb": [
+    5424,
+    8144,
+    3
+  ],
+  "source_bit_depth": 16,
+  "composition_equivalence": {
+    "Classic-Neg": {
+      "label": "Fujifilm Classic Neg.",
+      "original_vlog_lut": "Luts/Fujifilm/FLog2C_to_CLASSIC-Neg_VLog.cube",
+      "baked_std_lut": "Samples/Panasonic-Standard/Generated-LUTs/CNEGSTD.cube",
+      "metrics": {
+        "channel_sample_count": 132519168,
+        "mean_absolute_code_error": 0.003519568993875236,
+        "rmse_code_error": 0.007864725379363344,
+        "p95_absolute_code_error": 0.014923323414969101,
+        "p99_absolute_code_error": 0.02128633554589151,
+        "max_absolute_code_error": 0.3184451331391289,
+        "mean_absolute_8bit_lsb": 0.8974900934381851,
+        "p95_absolute_8bit_lsb": 3.805447470817121,
+        "p99_absolute_8bit_lsb": 5.428015564202335,
+        "mean_absolute_10bit_lsb": 3.600519080734366,
+        "p99_absolute_10bit_lsb": 21.775921263447014
+      }
+    },
+    "Leica-Classic": {
+      "label": "Leica Classic",
+      "original_vlog_lut": "Luts/Leica/L-Log_to_Classic_VLog.cube",
+      "baked_std_lut": "Samples/Panasonic-Standard/Generated-LUTs/LEICASTD.cube",
+      "metrics": {
+        "channel_sample_count": 132519168,
+        "mean_absolute_code_error": 0.0021911274280181285,
+        "rmse_code_error": 0.00577882674337213,
+        "p95_absolute_code_error": 0.009735255970092317,
+        "p99_absolute_code_error": 0.017715724422064545,
+        "max_absolute_code_error": 0.2926193809931885,
+        "mean_absolute_8bit_lsb": 0.5587374941446228,
+        "p95_absolute_8bit_lsb": 2.482490272373541,
+        "p99_absolute_8bit_lsb": 4.517509727626459,
+        "mean_absolute_10bit_lsb": 2.2415233588625454,
+        "p99_absolute_10bit_lsb": 18.12318608377203
+      }
+    },
+    "Hasselblad-Standard": {
+      "label": "Hasselblad Standard",
+      "original_vlog_lut": "Luts/Hasselblad/Hasselblad_Standard_Phocus_X2D_VLog.cube",
+      "baked_std_lut": "Samples/Panasonic-Standard/Generated-LUTs/HASLSTD.cube",
+      "metrics": {
+        "channel_sample_count": 132519168,
+        "mean_absolute_code_error": 0.003376742955545871,
+        "rmse_code_error": 0.008128887657834469,
+        "p95_absolute_code_error": 0.01722743572137026,
+        "p99_absolute_code_error": 0.023468375677119097,
+        "max_absolute_code_error": 0.3752119134630685,
+        "mean_absolute_8bit_lsb": 0.8610694536641971,
+        "p95_absolute_8bit_lsb": 4.392996108949417,
+        "p99_absolute_8bit_lsb": 5.98443579766537,
+        "mean_absolute_10bit_lsb": 3.454408043523426,
+        "p99_absolute_10bit_lsb": 24.008148317692836
+      }
+    }
+  },
+  "native_capture_comparison": "Qualitative only. The frames were captured ten seconds apart and use ISO 4000 versus ISO 5000, so capture noise/exposure differences are not LUT error.",
+  "forced_same_raw_vlog_probe": {
+    "file": "P1013120_silkypix_panasonic_vlog_16bit_srgb.tif",
+    "endpoint": {
+      "minimum": 7939,
+      "maximum": 51410
+    },
+    "native_vlog_endpoint": {
+      "minimum": 7928,
+      "maximum": 51410
+    },
+    "result": "SILKYPIX accepted sidecar COLOR_MODE=COLORUI_PROPERTY_VLOG, but a Standard-shot RAW lacks native V-Log capture metadata/gain scaling. The forced render is retained as a technical probe and is not used as the equality reference."
+  }
+}

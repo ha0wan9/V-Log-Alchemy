@@ -32,7 +32,22 @@ The resulting `.cube` files can be directly loaded into Panasonic cameras (like 
 
 ## 📂 LUT Pack Content
 
-The LUTs in this repository are designed exclusively for **Panasonic V-Log / V-Gamut** input.
+The original creative LUTs in this repository are designed for **Panasonic V-Log / V-Gamut** input. v1.3 adds model-specific Panasonic Standard input adapters.
+
+### Panasonic Standard Input (v1.3)
+
+`Luts/Panasonic-Standard/Conversion` contains 33-point `Standard -> V-Log` adapters for GH6, S5II/S5IIX, G9II, GH7, S9, S1IIE, S1RII, S1II, and DC-L10.
+
+On dual-LUT cameras, configure My Photo Style as:
+
+```text
+LUT1 = matching model *S2V.cube (Standard base)
+LUT2 = an original V-Log creative LUT from this repository
+```
+
+Panasonic applies the pair as `LUT2(LUT1(image))`. Start with both opacities at 100%; lower only LUT2 to soften the look. For a single-LUT workflow, `Tools/merge_standard_luts.py` converts one or two V-Log LUTs into model-specific Standard versions. Every generated file places `#LUMIXPHOTOSTYLE STD` immediately after `TITLE`.
+
+See [`Luts/Panasonic-Standard/README.md`](Luts/Panasonic-Standard/README.md) for model and firmware support, dual-LUT setup, derivation details, and the Standard highlight/gamut limits that cannot be recovered.
 
 ### 🗻 Fujifilm GFX Series (F-Log2C Core)
 *Based on Fujifilm's medium format color science, a perfect match for high-resolution cameras like the S1R II.*
@@ -177,6 +192,18 @@ Here are some sample images showcasing the LUT effects:
 
 ### Leica Classic LUT
 ![Leica Classic LUT Sample](./Samples/Leica_Classic_Sample.jpg)
+
+### Panasonic Standard Input / Dual-LUT Baking
+
+Two-LUT versus single baked LUT comparison from one Standard TIFF:
+
+![S1RII Classic Neg Merge Equality](./Samples/Panasonic-Standard/S1RII_Classic-Neg_Merge_Equality.jpg)
+
+Native capture-path reference for Standard ISO 4000 versus V-Log ISO 5000:
+
+![S1RII Standard vs Native V-Log](./Samples/Panasonic-Standard/S1RII_Standard4000_vs_NativeVLog5000.jpg)
+
+See [`Samples/Panasonic-Standard/README.md`](Samples/Panasonic-Standard/README.md) for Leica and Hasselblad comparisons and full-resolution error metrics.
 
 ---
 

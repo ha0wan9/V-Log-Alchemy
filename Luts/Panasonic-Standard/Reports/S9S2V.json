@@ -1,0 +1,172 @@
+{
+  "method": "coarse global search plus bounded damped Gauss-Newton pseudo-inverse",
+  "standard_cube": "decoded/L00501.rgb16",
+  "vlog_cube": "decoded/L00527.rgb16",
+  "standard_map_b": "decoded/L00502.rgb16",
+  "vlog_map_b": "decoded/L00528.rgb16",
+  "vlog_shadow_map": "decoded/L00531.rgb16",
+  "vlog_shadow_map_b": "decoded/L00532.rgb16",
+  "vlog_shadow_domain_max": 0.1109375,
+  "pair_blend": 0.5,
+  "interpolation": "trilinear",
+  "output_cube": "Conversion/S9S2V.cube",
+  "standard_size": 129,
+  "vlog_size": 257,
+  "output_size": 33,
+  "standard_internal_domain_min": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "standard_internal_domain_max": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "vlog_internal_domain_min": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "vlog_internal_domain_max": [
+    7.1,
+    7.1,
+    7.1
+  ],
+  "coarse_inverse_rgb_euclidean_code_error": {
+    "mean": 0.1102088450671677,
+    "rmse": 0.12865372848981543,
+    "p50": 0.10007155456139617,
+    "p95": 0.2378193803872212,
+    "p99": 0.2959447783424243,
+    "max": 0.3724497351720374
+  },
+  "refined_inverse_before_canonicalization_rgb_euclidean_code_error": {
+    "mean": 0.01674968275044065,
+    "rmse": 0.04096399726517757,
+    "p50": 3.159580670698938e-12,
+    "p95": 0.10151916710251625,
+    "p99": 0.15628577764184928,
+    "max": 0.2511159794895196
+  },
+  "final_inverse_rgb_euclidean_code_error": {
+    "mean": 0.016662308514909102,
+    "rmse": 0.04080610449499797,
+    "p50": 3.443062021238233e-12,
+    "p95": 0.10051063118869422,
+    "p99": 0.1562781946168453,
+    "max": 0.2511159794895196
+  },
+  "nodes_with_locally_nonunique_preimages": 7781,
+  "inverse_fraction_above_1_over_1023": 0.23850070957508973,
+  "inverse_fraction_above_1_over_255": 0.2283440465258647,
+  "unclipped_vlog_output_min": [
+    1.5076920292114357e-06,
+    0.00011335859561286383,
+    0.04542124643921852
+  ],
+  "unclipped_vlog_output_max": [
+    1.0,
+    0.7277107187605287,
+    0.7144394707235027
+  ],
+  "output_was_clipped_to_0_1": true,
+  "neutral_axis_constraint": {
+    "diagonal_node_max_channel_spread_before": 0.31793119422684735,
+    "diagonal_node_max_channel_spread_after": 0.0,
+    "standard_code_0_45_vlog_mean": 0.42273746261574296
+  },
+  "paired_pipeline_validation": {
+    "sample_count": 20000,
+    "rgb_euclidean_code_error": {
+      "mean": 0.0531305818421165,
+      "rmse": 0.09147538789595931,
+      "p50": 0.02001306940481027,
+      "p95": 0.2224326780144311,
+      "p99": 0.31443826314531864,
+      "max": 0.6013929662710649
+    },
+    "channel_absolute_code_error": {
+      "mean": 0.022787395822198634,
+      "rmse": 0.05281333982595754,
+      "p50": 0.0031269390785707007,
+      "p95": 0.1240746021896705,
+      "p99": 0.24031109024149486,
+      "max": 0.5718884242236192
+    },
+    "channel_absolute_10bit_lsb_error": {
+      "mean": 23.311505926109206,
+      "rmse": 54.02804664195456,
+      "p50": 3.198858677377827,
+      "p95": 126.9283180400329,
+      "p99": 245.83824531704923,
+      "max": 585.0418579807624
+    },
+    "fraction_standard_near_0_or_1": 0.67425,
+    "unclipped_rgb_euclidean_code_error": {
+      "mean": 0.025617396600632305,
+      "rmse": 0.057718394152051974,
+      "p50": 0.006115615022778451,
+      "p95": 0.13958126404827062,
+      "p99": 0.2670955047767101,
+      "max": 0.4281799538366884
+    },
+    "clipped_rgb_euclidean_code_error": {
+      "mean": 0.06642301060357511,
+      "rmse": 0.1039276066334727,
+      "p50": 0.03274120533268529,
+      "p95": 0.24080642309110048,
+      "p99": 0.330494697133888,
+      "max": 0.6013929662710649
+    },
+    "neutral_ramp_channel_absolute_code_error": {
+      "mean": 0.0012114749918452322,
+      "rmse": 0.0020152043462402947,
+      "p50": 0.0006171434045962876,
+      "p95": 0.004052430810828622,
+      "p99": 0.004666074094729401,
+      "max": 0.027454394147891775
+    },
+    "neutral_ramp_channel_absolute_10bit_lsb_error": {
+      "mean": 1.239338916657673,
+      "rmse": 2.0615540462038218,
+      "p50": 0.6313377029020022,
+      "p95": 4.145636719477681,
+      "p99": 4.7733937989081765,
+      "max": 28.085845213293286
+    },
+    "correlated_source_rgb_euclidean_code_error": {
+      "log_rgb_sigma_0.05": {
+        "mean": 0.0024675685539264237,
+        "rmse": 0.007713525179021062,
+        "p50": 0.0011240050025699447,
+        "p95": 0.006464954128333638,
+        "p99": 0.02568561836796168,
+        "max": 0.23463717510013493
+      },
+      "log_rgb_sigma_0.1": {
+        "mean": 0.0036480209551582547,
+        "rmse": 0.01368255602273202,
+        "p50": 0.0010769979372669304,
+        "p95": 0.011367811771780565,
+        "p99": 0.031143951694291756,
+        "max": 0.29754718628419036
+      },
+      "log_rgb_sigma_0.2": {
+        "mean": 0.0069358654440242785,
+        "rmse": 0.02051311688307976,
+        "p50": 0.0014938077647954232,
+        "p95": 0.027586513410582568,
+        "p99": 0.07622846659189576,
+        "max": 0.3363405253620584
+      }
+    }
+  },
+  "limitations": [
+    "Standard clipping/folding destroys source information; the inverse is only a canonical pseudo-inverse.",
+    "Errors on clipped Standard values cannot be eliminated by increasing LUT resolution.",
+    "The result is valid only at the exact camera pipeline point represented by both input LUTs.",
+    "SILKYPIX forward maps were sampled with the selected interpolation method.",
+    "Panasonic does not publish the in-camera .cube interpolation method; 33-point output limits the difference."
+  ]
+}

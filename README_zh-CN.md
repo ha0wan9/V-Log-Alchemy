@@ -32,7 +32,22 @@
 
 ## 📂 文件列表与风格说明 (LUT Pack Content)
 
-本仓库提供的 LUT 专为 **Panasonic V-Log / V-Gamut** 输入设计。
+本仓库原有风格 LUT 专为 **Panasonic V-Log / V-Gamut** 输入设计。v1.3 新增按机型生成的 Panasonic Standard 输入适配。
+
+### Panasonic Standard 输入（v1.3）
+
+`Luts/Panasonic-Standard/Conversion` 包含 GH6、S5II/S5IIX、G9II、GH7、S9、S1IIE、S1RII、S1II 和 DC-L10 的 `Standard -> V-Log` 33 点转换 LUT。
+
+支持双 LUT 的相机应在 My Photo Style 中使用：
+
+```text
+LUT1 = 对应机型的 *S2V.cube（Standard base）
+LUT2 = 本仓库原有的 V-Log 风格 LUT
+```
+
+Panasonic 按 `LUT2(LUT1(image))` 串联应用两层。两层浓度先设为 100%，需要减弱风格时只降低 LUT2。单 LUT 使用场景可运行 `Tools/merge_standard_luts.py`，一次把一个或两个 V-Log LUT 转成对应机型的 Standard 版本。所有生成文件都在 `TITLE` 后立即包含 `#LUMIXPHOTOSTYLE STD`。
+
+机型、固件要求、双 LUT 设置、生成依据和不可恢复的 Standard 高光/色域限制见 [`Luts/Panasonic-Standard/README_zh-CN.md`](Luts/Panasonic-Standard/README_zh-CN.md)。
 
 ### 🗻 Fujifilm GFX Series (F-Log2C Core)
 *基于富士中画幅色彩科学，高像素机型（如 S1R II）的绝配。*
@@ -177,6 +192,18 @@
 
 ### 徕卡 Classic LUT
 ![Leica Classic LUT Sample](./Samples/Leica_Classic_Sample.jpg)
+
+### Panasonic Standard 输入 / 双 LUT 合并
+
+同一 Standard TIFF 的双 LUT 链与单个合并 LUT 对比：
+
+![S1RII Classic Neg Merge Equality](./Samples/Panasonic-Standard/S1RII_Classic-Neg_Merge_Equality.jpg)
+
+Standard ISO 4000 与原生 V-Log ISO 5000 连拍的真实路径参考：
+
+![S1RII Standard vs Native V-Log](./Samples/Panasonic-Standard/S1RII_Standard4000_vs_NativeVLog5000.jpg)
+
+Leica、Hasselblad 对照和全分辨率误差报告见 [`Samples/Panasonic-Standard/README_zh-CN.md`](Samples/Panasonic-Standard/README_zh-CN.md)。
 
 ---
 
