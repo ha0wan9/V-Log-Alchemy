@@ -58,24 +58,6 @@
         "mean_absolute_10bit_lsb": 2.2415233588625454,
         "p99_absolute_10bit_lsb": 18.12318608377203
       }
-    },
-    "Hasselblad-Standard": {
-      "label": "Hasselblad Standard",
-      "original_vlog_lut": "Luts/Hasselblad/Hasselblad_Standard_Phocus_X2D_VLog.cube",
-      "baked_std_lut": "Samples/Panasonic-Standard/Generated-LUTs/HASLSTD.cube",
-      "metrics": {
-        "channel_sample_count": 132519168,
-        "mean_absolute_code_error": 0.003376742955545871,
-        "rmse_code_error": 0.008128887657834469,
-        "p95_absolute_code_error": 0.01722743572137026,
-        "p99_absolute_code_error": 0.023468375677119097,
-        "max_absolute_code_error": 0.3752119134630685,
-        "mean_absolute_8bit_lsb": 0.8610694536641971,
-        "p95_absolute_8bit_lsb": 4.392996108949417,
-        "p99_absolute_8bit_lsb": 5.98443579766537,
-        "mean_absolute_10bit_lsb": 3.454408043523426,
-        "p99_absolute_10bit_lsb": 24.008148317692836
-      }
     }
   },
   "native_capture_comparison": "Qualitative only. The frames were captured ten seconds apart and use ISO 4000 versus ISO 5000, so capture noise/exposure differences are not LUT error.",

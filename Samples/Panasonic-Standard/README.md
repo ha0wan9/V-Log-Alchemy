@@ -19,7 +19,6 @@ The lower-right panel shows absolute difference at 16x gain. Full-resolution res
 |---|---:|---:|
 | Fujifilm Classic Neg. | 0.897 | 5.428 |
 | Leica Classic | 0.559 | 4.518 |
-| Hasselblad Standard | 0.861 | 5.984 |
 
 The paths are not pixel-identical, but their mean difference is below one 8-bit code value. Larger local errors are concentrated around strongly clipped or high-contrast boundaries and come from rebaking two 33-point LUTs into one 33-point LUT. The original two-LUT chain remains preferable on cameras that support it.
 

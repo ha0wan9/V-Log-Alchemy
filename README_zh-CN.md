@@ -106,17 +106,16 @@ Panasonic 按 `LUT2(LUT1(image))` 串联应用两层。两层浓度先设为 100
 ---
 
 ### 🟧 Hasselblad Phocus (Phocus X2D Core)
-*基于 Hasselblad Phocus 4.0.1 X2D 已恢复的渲染路径（含日光色彩校正阶段），并按 Hasselblad Natural Colour Solution (HNCS) 官方说明来描述风格，v1.2 更新。*
+*基于 Hasselblad Phocus 4.0.1 X2D 已恢复的渲染路径（含日光色彩校正阶段）。v1.4 以可直接使用的 Rec.709 和 sRGB 输出替换原 Hasselblad RGB/D50 中间域文件。*
 
-*   **`Luts/Hasselblad/Hasselblad_Standard_Phocus_X2D_VLog.cube`**
-    *   **风格**: Hasselblad Standard。
-    *   **特点**: 将 V-Log/V-Gamut 映射到 Hasselblad RGB 后，应用实测的日光 Phocus `ColorCorrect` CbCr 阶段（还原哈苏真正的色彩分离）、高光滚降，以及 Phocus Standard film curve，获得自然、真实、平滑过渡、克制但丰富的饱和度和胶片式对比。
-*   **`Luts/Hasselblad/Hasselblad_Nature_Phocus_X2D_VLog.cube`**
-    *   **风格**: Hasselblad Nature。
-    *   **特点**: 以 Standard 为基础，叠加实测 Phocus Nature RGB gradation table。它仍保留 HNCS 对平滑过渡和可信色彩的强调，但在户外色彩和高饱和场景中给出更饱满的影调响应。
-*   **65 点版本**也已包含，用于更高精度的后期流程：`Hasselblad_Standard_Phocus_X2D_VLog_65.cube` 和 `Hasselblad_Nature_Phocus_X2D_VLog_65.cube`。
+*   **`Hasselblad_Standard_Phocus_X2D_VLog_Rec709.cube` / `..._sRGB.cube`**
+    *   **风格**: Hasselblad Standard，包含实测日光 Phocus `ColorCorrect` CbCr 阶段、高光滚降和 Standard film curve。
+*   **`Hasselblad_Nature_Phocus_X2D_VLog_Rec709.cube` / `..._sRGB.cube`**
+    *   **风格**: Hasselblad Nature，在 Standard 基础上叠加实测 Nature RGB gradation table，户外和高饱和色响应更饱满。
+*   **输出选择**: 相机监看/视频使用 Rec.709，sRGB 管理的照片和桌面流程使用 sRGB；两者都是完整显示变换，无需后续 CST。
+*   **65 点版本**: Standard/Nature 与 Rec.709/sRGB 的全部组合均提供 65 点版本。
 *   **日光烘焙**: Phocus `ColorCorrect` / CbCr 阶段会随白平衡变化。发布的 LUT 和仓库内 artifact 使用日光表（同时覆盖阴天/阴影区间）。仓库未包含钨丝灯和暖光捕获；如已另行准备对应的 artifact bundle，可通过 `--artifact` 选择。
-*   **输出约定**: 为保持向后兼容，现有四个文件保留原始 Hasselblad RGB/D50 film-curve 输出。自包含生成器可通过 `--output-space rec709` 或 `--output-space srgb` 生成无需后续 CST 的完整显示变换；不要把 Hasselblad RGB 输出误当作 ACES AP1。
+*   **移除旧版**: v1.4 前的 Hasselblad RGB/D50 中间域 LUT 不适合普通用户直接使用，现已从主版本移除；仍可从 `v1.3` 标签获取，且不能把它们当作 ACES AP1。
 *   **不单独发布**: `Portrait` 和 `Product`，因为实测颜色转换与 `Standard` 一致；它们在 Phocus 里的差异主要是 3D LUT 无法编码的锐化/降噪行为。
 
 风格参考：[Hasselblad Natural Colour Solution](https://www.hasselblad.com/learn/hasselblad-natural-colour-solution/)。恢复出的处理路径见 [`Luts/Hasselblad/README.md`](Luts/Hasselblad/README.md)。
@@ -204,7 +203,7 @@ Standard ISO 4000 与原生 V-Log ISO 5000 连拍的真实路径参考：
 
 ![S1RII Standard vs Native V-Log](./Samples/Panasonic-Standard/S1RII_Standard4000_vs_NativeVLog5000.jpg)
 
-Leica、Hasselblad 对照和全分辨率误差报告见 [`Samples/Panasonic-Standard/README_zh-CN.md`](Samples/Panasonic-Standard/README_zh-CN.md)。
+Fujifilm、Leica 对照和全分辨率误差报告见 [`Samples/Panasonic-Standard/README_zh-CN.md`](Samples/Panasonic-Standard/README_zh-CN.md)。
 
 ---
 
@@ -274,13 +273,13 @@ V-Log / V-Gamut
   -> highlight rolloff
   -> Phocus Standard film curve
   -> optional Phocus style gradation
-  -> optional explicit Rec.709 or sRGB display conversion
+  -> explicit Rec.709 or sRGB display conversion
 ```
 
 这条路径由 [`Tools/generate_hasselblad_vlog.py`](Tools/generate_hasselblad_vlog.py) 生成。
 这里对哈苏风格的描述遵循 HNCS 对准确色彩、平滑明暗/色彩过渡、肤色连续性、胶片式对比，以及从拍摄到 Phocus 后期一致性的强调。
 Phocus `ColorCorrect` / CbCr 阶段会随白平衡变化；发布的 LUT 烘焙进仓库内的日光表（同时覆盖阴天/阴影）。若要使用其他实测表，需要另行准备 manifest bundle 并通过 `--artifact` 选择。
-生成器及其经过 SHA-256 校验的数值资产均已包含在仓库中，只使用相对路径。默认 `hasselblad-rgb` 模式可逐值复现现有文件；`--output-space rec709` 会执行 Hasselblad RGB ICC TRC 解码、Bradford D50 到 D65 适配、BT.709 原色转换和 BT.709 OETF，`--output-space srgb` 则使用同一组 D65 原色和 sRGB 传递函数。这些是定义明确的色度转换，并不声称能精确复现尚未恢复的 Phocus 导出色域映射。准确输出约定和干净检出命令见 [`Luts/Hasselblad/README.md`](Luts/Hasselblad/README.md)。
+生成器及其经过 SHA-256 校验的数值资产均已包含在仓库中，只使用相对路径。默认 `rec709` 模式执行 Hasselblad RGB ICC TRC 解码、Bradford D50 到 D65 适配、BT.709 原色转换和 BT.709 OETF；`--output-space srgb` 使用同一组 D65 原色和 sRGB 传递函数。`hasselblad-rgb` 仍作为名称明确的高级中间域模式保留，但不再发布为普通用户 LUT。这些是定义明确的色度转换，并不声称能精确复现尚未恢复的 Phocus 导出色域映射。准确输出约定和干净检出命令见 [`Luts/Hasselblad/README.md`](Luts/Hasselblad/README.md)。
 
 ---
 

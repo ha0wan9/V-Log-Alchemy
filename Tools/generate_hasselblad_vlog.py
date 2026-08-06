@@ -14,7 +14,7 @@ REPOSITORY_ROOT = SCRIPT_DIR.parent
 DEFAULT_ARTIFACT = SCRIPT_DIR / "hasselblad_x2d100c_standard_cc.json"
 DEFAULT_OUTPUT_DIR = REPOSITORY_ROOT / "Luts" / "Hasselblad"
 COLOR_STYLES = ("Standard", "Nature")
-OUTPUT_SPACES = ("hasselblad-rgb", "rec709", "srgb")
+OUTPUT_SPACES = ("rec709", "srgb", "hasselblad-rgb")
 D65_WHITE_XY = (0.3127, 0.3290)
 V_GAMUT_PRIMARIES = (0.730, 0.280, 0.165, 0.840, 0.100, -0.030)
 REC709_PRIMARIES = (0.640, 0.330, 0.300, 0.600, 0.150, 0.060)
@@ -308,7 +308,7 @@ def apply_u16_curve(rgb, curve):
 
 def output_path_for_style(output_dir, style, size, output_space):
     space_suffix = {
-        "hasselblad-rgb": "",
+        "hasselblad-rgb": "_HassRGBD50",
         "rec709": "_Rec709",
         "srgb": "_sRGB",
     }[output_space]
@@ -384,10 +384,10 @@ def main(argv=None):
     parser.add_argument(
         "--output-space",
         choices=OUTPUT_SPACES,
-        default="hasselblad-rgb",
+        default="rec709",
         help=(
-            "hasselblad-rgb reproduces the published legacy LUTs; rec709 and srgb "
-            "append a complete, explicitly defined display conversion."
+            "rec709 (default) and srgb emit complete display conversions; "
+            "hasselblad-rgb emits the D50 intermediate for advanced analysis only."
         ),
     )
     parser.add_argument("--output", default="", help="Output path for one style; invalid with --all-styles.")
@@ -463,8 +463,11 @@ def main(argv=None):
                 out_path = output_path_for_style(Path(args.output_dir), style, size, args.output_space)
             path_description = "ColorCorrect" if args.include_color_correct else "Curve"
             title = f"Hasselblad {style} Phocus X2D {path_description} from V-Log"
-            if args.output_space != "hasselblad-rgb":
-                title += f" to {args.output_space}"
+            title += {
+                "rec709": " to Rec.709",
+                "srgb": " to sRGB",
+                "hasselblad-rgb": " to Hasselblad RGB D50",
+            }[args.output_space]
             write_cube(out_path, title, size, args.output_space, transform)
             print(out_path)
     return 0

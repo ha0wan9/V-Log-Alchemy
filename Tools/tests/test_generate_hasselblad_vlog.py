@@ -1,3 +1,4 @@
+import hashlib
 import importlib.util
 import subprocess
 import sys
@@ -37,6 +38,19 @@ class HasselbladGeneratorTests(unittest.TestCase):
             asset_path, _ = GENERATOR.resolve_asset(artifact_path, artifact, name)
             self.assertTrue(asset_path.is_file())
 
+    def test_published_lut_checksums_are_complete_and_valid(self):
+        lut_dir = REPOSITORY_ROOT / "Luts" / "Hasselblad"
+        checksum_path = lut_dir / "SHA256SUMS.txt"
+        declared = {}
+        for line in checksum_path.read_text(encoding="ascii").splitlines():
+            digest, filename = line.split(maxsplit=1)
+            declared[filename] = digest
+        published = {path.name for path in lut_dir.glob("*.cube")}
+        self.assertEqual(set(declared), published)
+        for filename, expected in declared.items():
+            actual = hashlib.sha256((lut_dir / filename).read_bytes()).hexdigest()
+            self.assertEqual(actual, expected)
+
     def test_display_transfer_reference_points(self):
         self.assertEqual(GENERATOR.encode_rec709(0.0), 0.0)
         self.assertAlmostEqual(GENERATOR.encode_rec709(0.018), 0.081, places=12)
@@ -59,7 +73,7 @@ class HasselbladGeneratorTests(unittest.TestCase):
         output_dir = Path("output")
         self.assertEqual(
             GENERATOR.output_path_for_style(output_dir, "Standard", 33, "hasselblad-rgb").name,
-            "Hasselblad_Standard_Phocus_X2D_VLog.cube",
+            "Hasselblad_Standard_Phocus_X2D_VLog_HassRGBD50.cube",
         )
         self.assertEqual(
             GENERATOR.output_path_for_style(output_dir, "Nature", 65, "rec709").name,
@@ -70,7 +84,7 @@ class HasselbladGeneratorTests(unittest.TestCase):
             "Hasselblad_Nature_Phocus_X2D_VLog_sRGB.cube",
         )
 
-    def test_rec709_cli_output_is_complete_and_bounded(self):
+    def test_default_cli_output_is_rec709_complete_and_bounded(self):
         with tempfile.TemporaryDirectory(prefix="hasselblad-generator-test-") as temp_dir:
             output = Path(temp_dir) / "test.cube"
             subprocess.run(
@@ -83,8 +97,6 @@ class HasselbladGeneratorTests(unittest.TestCase):
                     "2",
                     "--include-color-correct",
                     "--highlight-rolloff",
-                    "--output-space",
-                    "rec709",
                     "--output",
                     str(output),
                 ],
@@ -99,41 +111,42 @@ class HasselbladGeneratorTests(unittest.TestCase):
             self.assertEqual(len(rows), 8)
             self.assertTrue(all(0.0 <= value <= 1.0 for row in rows for value in row))
 
-    def test_published_legacy_luts_are_numerically_reproducible(self):
+    def test_published_display_luts_are_numerically_reproducible(self):
         with tempfile.TemporaryDirectory(prefix="hasselblad-reproduction-test-") as temp_dir:
-            for style in ("Standard", "Nature"):
-                output = Path(temp_dir) / f"{style}.cube"
-                subprocess.run(
-                    [
-                        sys.executable,
-                        str(GENERATOR_PATH),
-                        "--style",
-                        style,
-                        "--size",
-                        "33",
-                        "--include-color-correct",
-                        "--highlight-rolloff",
-                        "--output-space",
-                        "hasselblad-rgb",
-                        "--output",
-                        str(output),
-                    ],
-                    cwd=REPOSITORY_ROOT,
-                    check=True,
-                    capture_output=True,
-                    text=True,
-                )
-                published = (
-                    REPOSITORY_ROOT
-                    / "Luts"
-                    / "Hasselblad"
-                    / f"Hasselblad_{style}_Phocus_X2D_VLog.cube"
-                )
-                self.assertIn(
-                    "# OUTPUT_COLORSPACE Hasselblad RGB / D50 / Phocus film-curve code values",
-                    published.read_text(encoding="ascii"),
-                )
-                self.assertEqual(numeric_rows(output), numeric_rows(published))
+            for output_space, suffix, description in (
+                ("rec709", "Rec709", "Rec.709 primaries / D65 / BT.709 OETF"),
+                ("srgb", "sRGB", "sRGB primaries / D65 / sRGB transfer function"),
+            ):
+                for style in ("Standard", "Nature"):
+                    output = Path(temp_dir) / f"{style}-{output_space}.cube"
+                    subprocess.run(
+                        [
+                            sys.executable,
+                            str(GENERATOR_PATH),
+                            "--style",
+                            style,
+                            "--size",
+                            "33",
+                            "--include-color-correct",
+                            "--highlight-rolloff",
+                            "--output-space",
+                            output_space,
+                            "--output",
+                            str(output),
+                        ],
+                        cwd=REPOSITORY_ROOT,
+                        check=True,
+                        capture_output=True,
+                        text=True,
+                    )
+                    published = (
+                        REPOSITORY_ROOT
+                        / "Luts"
+                        / "Hasselblad"
+                        / f"Hasselblad_{style}_Phocus_X2D_VLog_{suffix}.cube"
+                    )
+                    self.assertIn(f"# OUTPUT_COLORSPACE {description}", published.read_text(encoding="ascii"))
+                    self.assertEqual(numeric_rows(output), numeric_rows(published))
 
 
 if __name__ == "__main__":
