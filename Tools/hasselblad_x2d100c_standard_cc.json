@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "camera": "Hasselblad X2D 100C",
+  "sensor": "Sony IMX461BQR",
+  "ir_filter": "QB53",
+  "color_model": "kColorModelStandard",
+  "source": {
+    "phocus_version": "4.0.1",
+    "white_balance": "daylight",
+    "film_curve": "kFilmCurveStandard"
+  },
+  "working_space": {
+    "name": "Hasselblad RGB",
+    "white_xy": [
+      0.3457,
+      0.3585
+    ],
+    "primaries_xy": [
+      0.6814082747,
+      0.3137223495,
+      0.2121134109,
+      0.739487866,
+      0.133515864,
+      0.0461104848
+    ],
+    "icc_trc_gamma": 2.19921875,
+    "rgb_to_xyz": [
+      [
+        0.6491241455,
+        0.188583374,
+        0.1264953613
+      ],
+      [
+        0.2988586426,
+        0.6574554443,
+        0.0436859131
+      ],
+      [
+        0.0046386719,
+        0.0430297852,
+        0.7772369385
+      ]
+    ]
+  },
+  "color_correct": {
+    "params": {
+      "start_cbcr": [
+        -20,
+        -32
+      ],
+      "cbcr_limits": [
+        104,
+        88
+      ],
+      "div_factor": 32.0,
+      "input_matrix": [
+        [
+          0.30222253500645596,
+          0.800492872442278,
+          -0.10231837826897985
+        ],
+        [
+          -0.1382366477801296,
+          -0.6559715777999232,
+          0.7973522589743394
+        ],
+        [
+          0.6103563579444916,
+          -0.5796741656012223,
+          -0.031700438681081175
+        ]
+      ],
+      "output_matrix": [
+        [
+          1.0,
+          -3.8088614323731476e-06,
+          0.043820084227094075
+        ],
+        [
+          1.0,
+          -0.010800846178036796,
+          -0.02232743590917279
+        ],
+        [
+          1.0,
+          0.055344234381821136,
+          -4.797128014514951e-06
+        ]
+      ],
+      "desat_gray": [
+        0,
+        0
+      ],
+      "dark_params": [
+        5521.133027747155,
+        -4.035047846902727e-09,
+        4.4556071872149384e-05,
+        0.877
+      ],
+      "apply_ev": true,
+      "apply_cc": true
+    }
+  },
+  "assets": {
+    "daylight_color_correct_lut": {
+      "path": "hasselblad_daylight_colormap_float2_105x89.bin",
+      "format": "little-endian float32x2",
+      "width": 105,
+      "height": 89,
+      "sha256": "350f7043d6c8f0f068903f147571c9921f06e748bf4eb850f321587917b8d8db"
+    },
+    "standard_film_curve": {
+      "path": "hasselblad_standard_film_curve_float_65536.bin",
+      "format": "little-endian float32",
+      "entries": 65536,
+      "sha256": "3ff3e7bb83b37fc64961b2eee02833f9e52766f2ecdd5486ed7a24412006bf4d"
+    },
+    "nature_gradation": {
+      "path": "hasselblad_nature_gradation_u16.bin",
+      "format": "little-endian uint16",
+      "entries": 65536,
+      "sha256": "4b549e27e217e67e4a1a5737edda933bba9b024584ec74ce5fb3ee07f95f3a12"
+    }
+  },
+  "notes": [
+    "The compact 105x89 float2 table contains the populated CbCr portion of the captured 256x256 GPU texture.",
+    "The Standard film curve is the 65536-entry table captured from SetFilmAndGradation.",
+    "All asset paths are relative to this manifest so the generator works from a clean checkout."
+  ]
+}

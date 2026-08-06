@@ -1,5 +1,7 @@
 TITLE "Hasselblad Nature Phocus X2D ColorCorrect from V-Log"
 #LUMIXPHOTOSTYLE VLOG
+# INPUT_COLORSPACE Panasonic V-Log / V-Gamut
+# OUTPUT_COLORSPACE Hasselblad RGB / D50 / Phocus film-curve code values
 LUT_3D_SIZE 65
 
 0 0 0

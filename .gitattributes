@@ -1,0 +1,5 @@
+/Luts/Hasselblad/*.cube text eol=lf
+/Tools/generate_hasselblad_vlog.py text eol=lf
+/Tools/hasselblad_*.json text eol=lf
+/Tools/hasselblad_*.bin binary
+/Tools/tests/test_generate_hasselblad_vlog.py text eol=lf
