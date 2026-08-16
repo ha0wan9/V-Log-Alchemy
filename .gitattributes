@@ -3,3 +3,14 @@
 /Tools/hasselblad_*.json text eol=lf
 /Tools/hasselblad_*.bin binary
 /Tools/tests/test_generate_hasselblad_vlog.py text eol=lf
+/Luts/Panasonic-Standard/Conversion/*.cube text eol=lf
+/Luts/Panasonic-Standard/Calibration/*.json text eol=lf
+/Luts/Panasonic-Standard/Reports/*.json text eol=lf
+/Luts/Panasonic-Standard/manifest.json text eol=lf
+/Luts/Panasonic-Standard/SHA256SUMS.txt text eol=lf
+/Luts/Panasonic-Standard/README*.md text eol=lf
+/Tools/apply_panasonic_vlog_output_correction.py text eol=lf
+/Tools/tests/test_apply_panasonic_vlog_output_correction.py text eol=lf
+/Samples/Panasonic-Standard/Generated-LUTs/*.cube text eol=lf
+/Samples/Panasonic-Standard/*.json text eol=lf
+/RELEASE_NOTES_v1.5*.md text eol=lf

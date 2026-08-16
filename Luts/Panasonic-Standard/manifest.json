@@ -1,15 +1,28 @@
 {
   "schema_version": 1,
   "package": "V-Log-Alchemy Panasonic Standard Input",
-  "package_version": "1.3",
+  "package_version": "1.5",
   "silkypix_version": "8.0.30.4",
-  "algorithm": "F_vlog(pseudo_inverse(F_standard(StandardRGB)))",
+  "algorithm": "F_vlog(pseudo_inverse(F_standard(StandardRGB))) followed by a shared controlled-capture V-Log output correction",
   "limitations": [
     "Standard clipping and gamut compression are not invertible.",
     "Lost highlights and dynamic range cannot be restored.",
     "Use only with the matching model and Panasonic Standard Photo Style.",
     "Panasonic does not publish the in-camera cube interpolation method."
   ],
+  "vlog_output_correction": {
+    "calibration": "Calibration/PanasonicVLogOutput.json",
+    "method": "mean_preserving_opponent_chroma_polynomial",
+    "strength": 0.8,
+    "scope": "all published Standard-input adapters",
+    "target": "fixed Panasonic V-Log/V-Gamut endpoint",
+    "training_camera": "DC-S1RM2 firmware 1.5",
+    "validation": {
+      "S1RII": "controlled quantitative chart and held-out captures",
+      "S9": "qualitative matching symptom in GitHub issue #12",
+      "other_models": "fixed-endpoint extrapolation; matched controlled pairs pending"
+    }
+  },
   "luts": [
     {
       "group": "L001",
@@ -18,7 +31,7 @@
       ],
       "path": "Conversion/GH6S2V.cube",
       "title": "GH6 Standard to V-Log",
-      "sha256": "4dae40c189aca3f7e1ae6fc84f1dd04c5fca3a3152b7a7b7ead94d6373781b33",
+      "sha256": "2099bec27ad55e8b69852868666052a2c6f8788751a2ee9d0a8a16aacc2310ff",
       "grid_size": 33,
       "lumix_photo_style": "STD",
       "range": "full_0_1",
@@ -30,13 +43,18 @@
       "forward_interpolation": "trilinear",
       "neutral_axis_enforced": true,
       "output_min": 0.0,
-      "output_max": 1.0,
+      "output_max": 0.989799519,
       "neutral_black": 0.1250305325,
       "standard_0_45_to_vlog": 0.42240675542,
       "neutral_white": 0.6774114966,
       "nonunique_inverse_nodes": 8611,
       "validation_samples": 20000,
-      "in_camera_tested": false
+      "in_camera_tested": false,
+      "vlog_output_correction": "Calibration/PanasonicVLogOutput.json",
+      "output_correction_validation": {
+        "status": "fixed_endpoint_extrapolation",
+        "controlled_model_pair_pending": true
+      }
     },
     {
       "group": "L002",
@@ -46,7 +64,7 @@
       ],
       "path": "Conversion/S5IIS2V.cube",
       "title": "S5II Standard to V-Log",
-      "sha256": "8454aaef95233a5016ff70e9be5b595e5b425d0cc025f66ff7727392ef33f6a0",
+      "sha256": "dda7a961a62268100ee931a191ea9e470ee3706938616337bf0d49bfd68d1ebb",
       "grid_size": 33,
       "lumix_photo_style": "STD",
       "range": "full_0_1",
@@ -58,13 +76,18 @@
       "forward_interpolation": "trilinear",
       "neutral_axis_enforced": true,
       "output_min": 0.0,
-      "output_max": 1.0,
+      "output_max": 0.9898522218,
       "neutral_black": 0.1250305325,
       "standard_0_45_to_vlog": 0.42273746262,
       "neutral_white": 0.6775765898,
       "nonunique_inverse_nodes": 7781,
       "validation_samples": 20000,
-      "in_camera_tested": false
+      "in_camera_tested": false,
+      "vlog_output_correction": "Calibration/PanasonicVLogOutput.json",
+      "output_correction_validation": {
+        "status": "fixed_endpoint_extrapolation",
+        "controlled_model_pair_pending": true
+      }
     },
     {
       "group": "L002",
@@ -74,7 +97,7 @@
       ],
       "path": "Conversion/S5IIXS2V.cube",
       "title": "S5IIX Standard to V-Log",
-      "sha256": "c2655068af12ebcb2cee3889310f85db45e0e02db1c732f53bf13d2fc8cce7ca",
+      "sha256": "2f207eb4c14b5fed1bb10316912a92181683983a2f5798167d6e9cdd7e2b6e7f",
       "grid_size": 33,
       "lumix_photo_style": "STD",
       "range": "full_0_1",
@@ -86,13 +109,18 @@
       "forward_interpolation": "trilinear",
       "neutral_axis_enforced": true,
       "output_min": 0.0,
-      "output_max": 1.0,
+      "output_max": 0.9898522218,
       "neutral_black": 0.1250305325,
       "standard_0_45_to_vlog": 0.42273746262,
       "neutral_white": 0.6775765898,
       "nonunique_inverse_nodes": 7781,
       "validation_samples": 20000,
-      "in_camera_tested": false
+      "in_camera_tested": false,
+      "vlog_output_correction": "Calibration/PanasonicVLogOutput.json",
+      "output_correction_validation": {
+        "status": "fixed_endpoint_extrapolation",
+        "controlled_model_pair_pending": true
+      }
     },
     {
       "group": "L003",
@@ -102,7 +130,7 @@
       ],
       "path": "Conversion/G9IIS2V.cube",
       "title": "G9II Standard to V-Log",
-      "sha256": "d2a1d4f8bc00e1f81a1c51d6defc48dd5867802acdeb01e4f48a68e68c09a7cb",
+      "sha256": "e4b02ed26dc0d34470a3e949c2d2c518876c6355b273bddf4a5de1cf80847366",
       "grid_size": 33,
       "lumix_photo_style": "STD",
       "range": "full_0_1",
@@ -120,7 +148,12 @@
       "neutral_white": 0.6774114966,
       "nonunique_inverse_nodes": 7147,
       "validation_samples": 20000,
-      "in_camera_tested": false
+      "in_camera_tested": false,
+      "vlog_output_correction": "Calibration/PanasonicVLogOutput.json",
+      "output_correction_validation": {
+        "status": "fixed_endpoint_extrapolation",
+        "controlled_model_pair_pending": true
+      }
     },
     {
       "group": "L004",
@@ -130,7 +163,7 @@
       ],
       "path": "Conversion/GH7S2V.cube",
       "title": "GH7 Standard to V-Log",
-      "sha256": "b407912c3a2f1763681f3e72b37a37c790b22340fe985aaccd0d7d2c2c321cbb",
+      "sha256": "c9fc257cee90c04b92edb05ee3431290e79ad9f90d16f7af87efc0c5317ef009",
       "grid_size": 33,
       "lumix_photo_style": "STD",
       "range": "full_0_1",
@@ -148,7 +181,12 @@
       "neutral_white": 0.6774114966,
       "nonunique_inverse_nodes": 7147,
       "validation_samples": 20000,
-      "in_camera_tested": false
+      "in_camera_tested": false,
+      "vlog_output_correction": "Calibration/PanasonicVLogOutput.json",
+      "output_correction_validation": {
+        "status": "fixed_endpoint_extrapolation",
+        "controlled_model_pair_pending": true
+      }
     },
     {
       "group": "L005",
@@ -158,7 +196,7 @@
       ],
       "path": "Conversion/S9S2V.cube",
       "title": "S9 Standard to V-Log",
-      "sha256": "68dd99e5a3051a26cd87f384c16f1fe94c4278a2e94acdb68eb93d23a1c4164f",
+      "sha256": "38693985932dea94555b38469198b54ab5170512325eeb123c59c206791f059f",
       "grid_size": 33,
       "lumix_photo_style": "STD",
       "range": "full_0_1",
@@ -169,14 +207,19 @@
       "pair_blend": 0.5,
       "forward_interpolation": "trilinear",
       "neutral_axis_enforced": true,
-      "output_min": 1.5077e-06,
-      "output_max": 1.0,
+      "output_min": 0.0,
+      "output_max": 0.9901800214,
       "neutral_black": 0.1250305325,
       "standard_0_45_to_vlog": 0.42273746262,
       "neutral_white": 0.6775765898,
       "nonunique_inverse_nodes": 7781,
       "validation_samples": 20000,
-      "in_camera_tested": false
+      "in_camera_tested": false,
+      "vlog_output_correction": "Calibration/PanasonicVLogOutput.json",
+      "output_correction_validation": {
+        "status": "qualitative_field_report",
+        "issue": "https://github.com/shenmintao/V-Log-Alchemy/issues/12"
+      }
     },
     {
       "group": "L006",
@@ -186,7 +229,7 @@
       ],
       "path": "Conversion/S1IIES2V.cube",
       "title": "S1IIE Standard to V-Log",
-      "sha256": "a2aebaff9a96b0a73dc23a14f33fa9d0523e1b1145c1c57fcb04a5d0d5529e8c",
+      "sha256": "43067f0dcf1fbc830760c75aeb97ff0ebd0d0a768799fbd98f21266b82484978",
       "grid_size": 33,
       "lumix_photo_style": "STD",
       "range": "full_0_1",
@@ -197,14 +240,19 @@
       "pair_blend": 0.5,
       "forward_interpolation": "trilinear",
       "neutral_axis_enforced": true,
-      "output_min": 6.4739e-06,
-      "output_max": 1.0,
+      "output_min": 0.0,
+      "output_max": 0.990574669,
       "neutral_black": 0.1250305325,
       "standard_0_45_to_vlog": 0.42419886104,
       "neutral_white": 0.6790860125,
       "nonunique_inverse_nodes": 8364,
       "validation_samples": 20000,
-      "in_camera_tested": false
+      "in_camera_tested": false,
+      "vlog_output_correction": "Calibration/PanasonicVLogOutput.json",
+      "output_correction_validation": {
+        "status": "fixed_endpoint_extrapolation",
+        "controlled_model_pair_pending": true
+      }
     },
     {
       "group": "L007",
@@ -214,7 +262,7 @@
       ],
       "path": "Conversion/S1RIIS2V.cube",
       "title": "S1RII Standard to V-Log",
-      "sha256": "fe08a48f3f2df4f02761a9c47d07623f1e69be284dd5c159fab82e87544fc338",
+      "sha256": "4e9e1d69674d322a75044d7cc33b92ee4436d9e0bf5da84c554cc892846997c4",
       "grid_size": 33,
       "lumix_photo_style": "STD",
       "range": "full_0_1",
@@ -226,13 +274,19 @@
       "forward_interpolation": "trilinear",
       "neutral_axis_enforced": true,
       "output_min": 0.0,
-      "output_max": 0.8025101077,
+      "output_max": 0.7220908752,
       "neutral_black": 0.1250305325,
       "standard_0_45_to_vlog": 0.42277952562,
       "neutral_white": 0.6778301256,
       "nonunique_inverse_nodes": 8699,
       "validation_samples": 20000,
-      "in_camera_tested": false
+      "in_camera_tested": false,
+      "vlog_output_correction": "Calibration/PanasonicVLogOutput.json",
+      "output_correction_validation": {
+        "status": "controlled_quantitative",
+        "camera": "DC-S1RM2",
+        "firmware": "1.5"
+      }
     },
     {
       "group": "L008",
@@ -242,7 +296,7 @@
       ],
       "path": "Conversion/S1IIS2V.cube",
       "title": "S1II Standard to V-Log",
-      "sha256": "32e0c75eb7d31b4615dc3212f79e503f135e8d0227b8fed210784861f3cef88c",
+      "sha256": "138d85db496f1c8f590b73d28ba7484eb5a250c01ae207b34fe20dedbb635ee0",
       "grid_size": 33,
       "lumix_photo_style": "STD",
       "range": "full_0_1",
@@ -253,14 +307,19 @@
       "pair_blend": 0.5,
       "forward_interpolation": "trilinear",
       "neutral_axis_enforced": true,
-      "output_min": 0.0002307078,
-      "output_max": 0.9057760476,
+      "output_min": 0.095908866,
+      "output_max": 0.844152019,
       "neutral_black": 0.1250305325,
       "standard_0_45_to_vlog": 0.42194324144,
       "neutral_white": 0.6656898856,
       "nonunique_inverse_nodes": 8096,
       "validation_samples": 20000,
-      "in_camera_tested": false
+      "in_camera_tested": false,
+      "vlog_output_correction": "Calibration/PanasonicVLogOutput.json",
+      "output_correction_validation": {
+        "status": "fixed_endpoint_extrapolation",
+        "controlled_model_pair_pending": true
+      }
     },
     {
       "group": "L009",
@@ -270,7 +329,7 @@
       ],
       "path": "Conversion/L10S2V.cube",
       "title": "DC-L10 Standard to V-Log",
-      "sha256": "4679bfef42020b6753938045296a0aade77a4331041086970b694b1f02a53be2",
+      "sha256": "d430e702cd68dbc7a561789e19dd9750acb5fe4c7fda80c02f356dd93756bd8f",
       "grid_size": 33,
       "lumix_photo_style": "STD",
       "range": "full_0_1",
@@ -282,13 +341,18 @@
       "forward_interpolation": "trilinear",
       "neutral_axis_enforced": true,
       "output_min": 0.0,
-      "output_max": 0.9616605639,
+      "output_max": 0.948914613,
       "neutral_black": 0.1250305325,
       "standard_0_45_to_vlog": 0.42223311988,
       "neutral_white": 0.6774114966,
       "nonunique_inverse_nodes": 7248,
       "validation_samples": 20000,
-      "in_camera_tested": false
+      "in_camera_tested": false,
+      "vlog_output_correction": "Calibration/PanasonicVLogOutput.json",
+      "output_correction_validation": {
+        "status": "fixed_endpoint_extrapolation",
+        "controlled_model_pair_pending": true
+      }
     }
   ]
 }

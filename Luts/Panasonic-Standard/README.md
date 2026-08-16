@@ -77,6 +77,36 @@ Standard uses 129-point maps, the V-Log main maps are 257-point, and V-Log shado
 | L008 | 8.0 | 0.125 |
 | L009 | 4.0 | 0.0625 |
 
+### Shared V-Log output correction
+
+All conversion LUTs add the same measured opponent-chroma correction after
+their model-specific decoded-map pseudo-inverse. This is an output-domain step:
+each Standard inverse remains model-specific, while the destination is the same
+fixed Panasonic V-Log/V-Gamut encoding. The regularized correction preserves
+every exact neutral RGB value and preserves mean RGB code before the final
+`[0,1]` clip; it does not apply a hard per-channel V-Log floor.
+
+Controlled S1RII firmware 1.5 captures at three chart exposures showed that the
+uncorrected output could produce an implausibly low red component for saturated
+cyan. An independent S9 report in GitHub issue #12 shows the same blue/cyan
+failure with the conversion LUT alone, supporting use of the common endpoint
+correction beyond L007.
+
+Leave-one-exposure-out chart validation reduced cyan mean RGB error from
+`0.1431` to `0.0652`. A separate nine-pair capture set reduced cyan error from
+`0.0689` to `0.0402`, while overall mean RGB error fell from `0.01748` to
+`0.01594`. Coefficients, constraints, and validation metrics are recorded in
+[`Calibration/PanasonicVLogOutput.json`](Calibration/PanasonicVLogOutput.json).
+The hash-locked all-model regeneration step is
+`Tools/apply_panasonic_vlog_output_correction.py --all`. On the published
+corrected files this command verifies and skips them; pass an uncorrected v1.3
+package with `--input-root` to regenerate the outputs.
+
+At identical nominal ISO, aperture, and shutter, the validated native V-Log RAW
+signal was about `0.397x` the Standard RAW signal (about `1.33` stops). This is
+an acquisition/gain-path difference: the output LUT cannot reproduce native
+V-Log noise, highlight headroom, or exposure-index behavior.
+
 ## Comparison Samples
 
 [`Samples/Panasonic-Standard/README.md`](../../Samples/Panasonic-Standard/README.md) contains three full-resolution two-LUT/single-LUT equivalence tests plus a native Standard ISO 4000 versus V-Log ISO 5000 capture-path reference.
@@ -87,6 +117,7 @@ Standard uses 129-point maps, the V-Log main maps are 257-point, and V-Log shado
 - The conversion is only for Panasonic `Standard`, not Natural, Cinelike, 709 Like, or a differently adjusted in-camera curve.
 - The two-LUT path avoids an extra 33-point rebake and is normally preferred on supported cameras.
 - Panasonic does not document the camera's `.cube` interpolation method. A 33-point output reduces interpolation differences.
+- The common correction is quantitatively validated on DC-S1RM2 firmware 1.5 and qualitatively supported on S9. Other model groups use the same fixed V-Log endpoint, but matched controlled captures are still pending.
 
 Official references:
 

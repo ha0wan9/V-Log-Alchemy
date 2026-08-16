@@ -17,8 +17,8 @@ The lower-right panel shows absolute difference at 16x gain. Full-resolution res
 
 | Look | Mean error (8-bit LSB) | P99 (8-bit LSB) |
 |---|---:|---:|
-| Fujifilm Classic Neg. | 0.897 | 5.428 |
-| Leica Classic | 0.559 | 4.518 |
+| Fujifilm Classic Neg. | 0.708 | 3.930 |
+| Leica Classic | 0.493 | 3.293 |
 
 The paths are not pixel-identical, but their mean difference is below one 8-bit code value. Larger local errors are concentrated around strongly clipped or high-contrast boundaries and come from rebaking two 33-point LUTs into one 33-point LUT. The original two-LUT chain remains preferable on cameras that support it.
 
@@ -43,4 +43,4 @@ COLOR_MODE=COLORUI_PROPERTY_VLOG
 
 This confirms that the V-Log tables are called. However, a Standard-shot RAW lacks the native V-Log capture gain/Photo Style metadata, so the forced render is not used as the final equality reference. Endpoints and details are recorded in `comparison_report.json`.
 
-`Generated-LUTs` contains the S1RII example LUTs used by the equivalence images. Every file has `#LUMIXPHOTOSTYLE STD` on its second line.
+`Generated-LUTs` contains the S1RII v1.5 corrected example LUTs used by the equivalence images. Every file has `#LUMIXPHOTOSTYLE STD` on its second line.

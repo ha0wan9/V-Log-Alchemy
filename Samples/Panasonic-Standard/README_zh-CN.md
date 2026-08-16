@@ -6,7 +6,7 @@
 
 ## 合并是否等价
 
-三张 `*_Merge_Equality.jpg` 使用同一份 Standard TIFF 比较：
+两张 `*_Merge_Equality.jpg` 使用同一份 Standard TIFF 比较：
 
 ```text
 路径 A：Standard -> S1RII S2V LUT -> 原 V-Log 风格 LUT
@@ -17,8 +17,8 @@
 
 | 风格 | 平均误差（8-bit LSB） | P99（8-bit LSB） |
 |---|---:|---:|
-| Fujifilm Classic Neg. | 0.897 | 5.428 |
-| Leica Classic | 0.559 | 4.518 |
+| Fujifilm Classic Neg. | 0.708 | 3.930 |
+| Leica Classic | 0.493 | 3.293 |
 
 因此两条路径不是逐像素完全相同，但平均差异低于 1 个 8-bit 码值。较大的局部差异主要来自两个 33 点 LUT 合并为一个 33 点 LUT后的重新采样，以及原风格 LUT 的强裁剪/高对比边界。支持双 LUT 的相机优先使用两层原始链，可避免这次额外烘焙。
 
@@ -43,4 +43,4 @@ COLOR_MODE=COLORUI_PROPERTY_VLOG
 
 这能证明 V-Log 表存在并被调用，但 Standard 拍摄 RAW 缺少原生 V-Log 捕获时的增益/照片格调元数据，因此强制结果不作为最终等价样张。详细端点和说明在 `comparison_report.json`。
 
-`Generated-LUTs` 中包含这三张等价性样张使用的 S1RII 示例 LUT，所有文件第二行均为 `#LUMIXPHOTOSTYLE STD`。
+`Generated-LUTs` 中包含这两张等价性样张使用的 S1RII v1.5 校正示例 LUT，所有文件第二行均为 `#LUMIXPHOTOSTYLE STD`。

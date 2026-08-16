@@ -1,5 +1,5 @@
 {
-  "method": "coarse global search plus bounded damped Gauss-Newton pseudo-inverse",
+  "method": "coarse global search plus bounded damped Gauss-Newton pseudo-inverse, followed by a shared controlled-capture V-Log output correction",
   "standard_cube": "decoded/L00801.rgb16",
   "vlog_cube": "decoded/L00829.rgb16",
   "standard_map_b": "decoded/L00802.rgb16",
@@ -60,23 +60,23 @@
   "nodes_with_locally_nonunique_preimages": 8096,
   "inverse_fraction_above_1_over_1023": 0.2244483401508195,
   "inverse_fraction_above_1_over_255": 0.2135960152489078,
-  "unclipped_vlog_output_min": [
-    0.00023070776978059053,
-    0.008424908576393369,
-    0.1156076186190769
-  ],
-  "unclipped_vlog_output_max": [
-    0.905776047553568,
-    0.7227342119497674,
-    0.6761826341639303
-  ],
-  "output_was_clipped_to_0_1": true,
   "neutral_axis_constraint": {
     "diagonal_node_max_channel_spread_before": 0.27433874102208816,
     "diagonal_node_max_channel_spread_after": 0.0,
     "standard_code_0_45_vlog_mean": 0.4219432414284807
   },
-  "paired_pipeline_validation": {
+  "pre_correction_unclipped_vlog_output_min": [
+    0.00023070776978059053,
+    0.008424908576393369,
+    0.1156076186190769
+  ],
+  "pre_correction_unclipped_vlog_output_max": [
+    0.905776047553568,
+    0.7227342119497674,
+    0.6761826341639303
+  ],
+  "pre_correction_output_was_clipped_to_0_1": true,
+  "pre_correction_paired_pipeline_validation": {
     "sample_count": 20000,
     "rgb_euclidean_code_error": {
       "mean": 0.04442474343336296,
@@ -162,11 +162,35 @@
       }
     }
   },
+  "empirical_output_chroma_correction": {
+    "calibration": "Calibration/PanasonicVLogOutput.json",
+    "target": "fixed Panasonic V-Log/V-Gamut endpoint",
+    "method": "mean_preserving_opponent_chroma_polynomial",
+    "strength": 0.8,
+    "neutral_axis_preserved": true,
+    "mean_code_preserved_before_final_clipping": true,
+    "corrected_output_min": [
+      0.11144133630743834,
+      0.12389606035742817,
+      0.09590886600860699
+    ],
+    "corrected_output_max": [
+      0.8441520190372772,
+      0.6982911317097548,
+      0.6656898856
+    ],
+    "final_clipped_channel_fraction": 0.0,
+    "validation_status": {
+      "status": "fixed_endpoint_extrapolation",
+      "controlled_model_pair_pending": true
+    }
+  },
   "limitations": [
     "Standard clipping/folding destroys source information; the inverse is only a canonical pseudo-inverse.",
     "Errors on clipped Standard values cannot be eliminated by increasing LUT resolution.",
-    "The result is valid only at the exact camera pipeline point represented by both input LUTs.",
+    "The decoded-map pseudo-inverse is valid only at the exact camera pipeline point represented by both input LUTs.",
     "SILKYPIX forward maps were sampled with the selected interpolation method.",
-    "Panasonic does not publish the in-camera .cube interpolation method; 33-point output limits the difference."
+    "Panasonic does not publish the in-camera .cube interpolation method; 33-point output limits the difference.",
+    "The shared output correction has controlled quantitative validation on S1RII; other model groups retain the same fixed V-Log endpoint but need matched model-specific capture validation."
   ]
 }
