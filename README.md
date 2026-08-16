@@ -201,9 +201,9 @@ Two-LUT versus single baked LUT comparison from one Standard TIFF:
 
 ![S1RII Classic Neg Merge Equality](./Samples/Panasonic-Standard/S1RII_Classic-Neg_Merge_Equality.jpg)
 
-Native capture-path reference for Standard ISO 4000 versus V-Log ISO 5000:
+Controlled S1RII Standard versus native V-Log reference at identical settings:
 
-![S1RII Standard vs Native V-Log](./Samples/Panasonic-Standard/S1RII_Standard4000_vs_NativeVLog5000.jpg)
+![S1RII Controlled Standard vs Native V-Log](./Samples/Panasonic-Standard/S1RII_Controlled_Standard_vs_NativeVLog.jpg)
 
 See [`Samples/Panasonic-Standard/README.md`](Samples/Panasonic-Standard/README.md) for Fujifilm and Leica comparisons and full-resolution error metrics.
 

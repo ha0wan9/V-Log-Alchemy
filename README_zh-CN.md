@@ -201,9 +201,9 @@ Panasonic 按 `LUT2(LUT1(image))` 串联应用两层。两层浓度先设为 100
 
 ![S1RII Classic Neg Merge Equality](./Samples/Panasonic-Standard/S1RII_Classic-Neg_Merge_Equality.jpg)
 
-Standard ISO 4000 与原生 V-Log ISO 5000 连拍的真实路径参考：
+相同设置下的 S1RII Standard 与原生 V-Log 受控对照：
 
-![S1RII Standard vs Native V-Log](./Samples/Panasonic-Standard/S1RII_Standard4000_vs_NativeVLog5000.jpg)
+![S1RII Controlled Standard vs Native V-Log](./Samples/Panasonic-Standard/S1RII_Controlled_Standard_vs_NativeVLog.jpg)
 
 Fujifilm、Leica 对照和全分辨率误差报告见 [`Samples/Panasonic-Standard/README_zh-CN.md`](Samples/Panasonic-Standard/README_zh-CN.md)。
 

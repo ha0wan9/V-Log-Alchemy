@@ -10,14 +10,6 @@
     "timestamp": "2025-11-28T19:31:16",
     "silkypix_export": "P1013120_silkypix_panasonic_standard_matched_16bit_srgb.tif"
   },
-  "native_vlog_raw": {
-    "file": "P1013121.RW2",
-    "iso": 5000,
-    "shutter_seconds": 0.016666666666666666,
-    "aperture": 4.0,
-    "timestamp": "2025-11-28T19:31:26",
-    "silkypix_export": "P1013121_silkypix_panasonic_vlog_16bit_srgb.tif"
-  },
   "source_shape_rgb": [
     5424,
     8144,
@@ -62,7 +54,6 @@
       }
     }
   },
-  "native_capture_comparison": "Qualitative only. The frames were captured ten seconds apart and use ISO 4000 versus ISO 5000, so capture noise/exposure differences are not LUT error.",
   "forced_same_raw_vlog_probe": {
     "file": "P1013120_silkypix_panasonic_vlog_16bit_srgb.tif",
     "endpoint": {

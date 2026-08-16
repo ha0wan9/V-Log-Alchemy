@@ -22,14 +22,24 @@ The lower-right panel shows absolute difference at 16x gain. Full-resolution res
 
 The paths are not pixel-identical, but their mean difference is below one 8-bit code value. Larger local errors are concentrated around strongly clipped or high-contrast boundaries and come from rebaking two 33-point LUTs into one 33-point LUT. The original two-LUT chain remains preferable on cameras that support it.
 
-## Native Capture Paths
+## Controlled Standard / Native V-Log Comparison
 
-`S1RII_Standard4000_vs_NativeVLog5000.jpg` uses consecutive RAW captures:
+`S1RII_Controlled_Standard_vs_NativeVLog.jpg` uses a controlled HIF pair from
+DC-S1RM2 firmware 1.5:
 
-- `P1013120.RW2`: Standard, ISO 4000, 1/60 s, F4, 19:31:16.
-- `P1013121.RW2`: native V-Log, ISO 5000, 1/60 s, F4, 19:31:26.
+- `P1024418.HIF`: Standard, ISO 800, 1/50 s, f/5.6, fixed manual white balance.
+- `P1024415.HIF`: native V-Log, with the same ISO, shutter, aperture, white
+  balance, light, and framing; registered to the Standard frame.
 
-The lower row compares Standard plus the baked STD LUT against native V-Log plus the original LUT. This is qualitative only: the captures are ten seconds apart and use different ISO settings, so brightness, noise, white balance, and sensor-gain differences are not merger error.
+The panels show the published v1.5 conversion before and after Classic Neg
+beside the official native V-Log paths. The displayed LUT outputs have no
+post-alignment correction. Only the difference panel removes the median RGB
+offset to isolate colour residuals. After that alignment, Classic Neg mean RGB
+distance is `0.0305` over stable pixels and `0.0669` in the cyan region. Exact
+metrics and registration data are in `controlled_profile_comparison.json`.
+
+The remaining difference is real: Standard clipping is irreversible, and the
+native V-Log RAW acquisition/gain path cannot be reproduced by an output LUT.
 
 ## Same-RAW SILKYPIX Probe
 
@@ -41,6 +51,6 @@ COLOR_PROPERTY=COLORUI_PROPERTY_PANA
 COLOR_MODE=COLORUI_PROPERTY_VLOG
 ```
 
-This confirms that the V-Log tables are called. However, a Standard-shot RAW lacks the native V-Log capture gain/Photo Style metadata, so the forced render is not used as the final equality reference. Endpoints and details are recorded in `comparison_report.json`.
+This confirms that the V-Log tables are called. However, a Standard-shot RAW lacks the native V-Log capture gain/Photo Style metadata, so the forced render is not used as the final equality reference. Legacy probe endpoints and merger details are recorded in `comparison_report.json`.
 
 `Generated-LUTs` contains the S1RII v1.5 corrected example LUTs used by the equivalence images. Every file has `#LUMIXPHOTOSTYLE STD` on its second line.
