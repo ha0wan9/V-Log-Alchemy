@@ -158,6 +158,23 @@
 
 ---
 
+### 🚁 DJI (输入适配，不是风格)
+*这一组的方向和其它 LUT 相反：它把 DJI 素材转换成 V-Log / V-Gamut，从而让上面所有 LUT 都能用在 DJI 相机上。*
+
+*   **`DJI_DLog_to_VLog.cube`** (后期请用 `_65` 版本)
+    *   **风格**: 无。纯技术转换，DJI D-Log / D-Gamut -> 松下 V-Log / V-Gamut。
+    *   **用法**: 串在风格 LUT 前面，例如 `DJI 素材 -> DJI_DLog_to_VLog.cube -> FLog2C_to_CLASSIC-Neg_VLog.cube`。
+    *   **精度**: 精确。DJI 公开了 D-Log 传递函数与 D-Gamut 基色，因此可以直接解析求解（见 `DCTL/DJI_DLog_to_VLog.dctl`）。
+*   **`DJI_DLogM_to_VLog.cube`** (后期请用 `_65` 版本)
+    *   **风格**: 无。D-Log M 的同类转换，覆盖 Osmo Action / Osmo Nano / Mini / Mavic 等机型。
+    *   **精度**: 逆向工程。DJI 从未公开 D-Log M 曲线，这里用两张共享同一 look 的官方 Rec.709 LUT 对消掉 look，只留下传递曲线。合成数据验证误差 0.015 stop；反解出的 18% 中灰（D-Log M 41.65%）落在 V-Log 原生中灰上，偏差 0.0002。
+    *   仅凭一张官方 LUT 在数学上**不可能**解出：DJI 的 Rec.709 渲染是真正的三维变换，曲线和 look 无法从单一文件中分离。完整推导、失败的模型假设与拟合边界见 [`Luts/DJI/README.md`](Luts/DJI/README.md)。
+
+*   **`DJI_DLogM_to_Leica_Classic.cube`** (后期请用 `_65` 版本)
+    *   烘焙示例：D-Log M 一步到位出徕卡 Classic，不需要串联。任意风格 LUT 都可以用 `--look` 同样烘进去，与串联方案的精度取舍见 [`Luts/DJI/README.md`](Luts/DJI/README.md)。
+
+---
+
 ## 📺 社区作品展示 (Community Showcase)
 
 这是使用 **V-Log Alchemy** 完成的对比视频 (富士 X100V vs. Lumix S5IIX)。
@@ -249,6 +266,20 @@ V-Log / V-Gamut
 这条路径由 [`Tools/generate_hasselblad_vlog.py`](Tools/generate_hasselblad_vlog.py) 生成。
 这里对哈苏风格的描述遵循 HNCS 对准确色彩、平滑明暗/色彩过渡、肤色连续性、胶片式对比，以及从拍摄到 Phocus 后期一致性的强调。
 已恢复的 Phocus `ColorCorrect` / CbCr stage 仍可通过生成器的实验参数 `--include-color-correct` 使用，但它不进入稳定发布版，因为它会随白平衡变化。
+
+反方向的 DJI 适配 LUT 使用的是由两家厂商公开基色推导出的 D-Gamut -> V-Gamut 矩阵
+（两者都是 D65 白点，因此不做色适应）：
+
+```c
+// DJI D-Gamut (Linear) 转 松下 V-Gamut (Linear)
+{
+     0.942906656020367f,  0.070242731146910f, -0.013149387167276f,
+     0.023328636605405f,  1.045826271120858f, -0.069154907726263f,
+     0.008056580431169f, -0.072113401158914f,  1.064056820727745f,
+};
+```
+
+该路径由 [`Tools/generate_dji_vlog.py`](Tools/generate_dji_vlog.py) 生成。
 
 ---
 
