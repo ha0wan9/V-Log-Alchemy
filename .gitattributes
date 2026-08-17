@@ -17,5 +17,3 @@
 /Samples/Panasonic-Standard/Generated-LUTs/*.cube text eol=lf
 /Samples/Panasonic-Standard/*.json text eol=lf
 /Samples/Panasonic-Standard/*.jpg binary
-/RELEASE_NOTES_v1.5*.md text eol=lf
-/RELEASE_NOTES_v1.6*.md text eol=lf
