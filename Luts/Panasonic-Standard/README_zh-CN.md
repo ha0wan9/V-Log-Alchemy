@@ -55,15 +55,17 @@ S5II 与 S5IIX 使用同一 SILKYPIX 映射，但提供两个文件别名。G9II
 
 ## 生成依据
 
-这些 LUT 来自 SILKYPIX Developer Studio 8 SE 的同机型前向表：
+这些 LUT 由 SILKYPIX Developer Studio 8 SE 的同机型前向表进行全局拟合。对共享的内部样本 `x_i`：
 
 ```text
 Standard RGB = F_standard(internal RGB)
 V-Log RGB    = F_vlog(internal RGB)
-S2V RGB      = F_vlog(pseudo_inverse(F_standard(Standard RGB)))
+拟合 L，使 L(F_standard(x_i)) ~= F_vlog(x_i)
 ```
 
-Standard 表为 129 点，V-Log 主表为 257 点，暗部细化表为 17 点。生成时使用 SILKYPIX 的三线性采样方式、odd/even 表的中点混合，并在三个通道均低于主表 `1/64` domain 时使用暗部表。
+完整 LUT 节点在同一个正则最小二乘目标中联合求解，不再为每个输出节点单独选择 Standard 伪逆。目标包含二阶平滑、严格中性轴约束、受控相机配对，以及只在弱覆盖节点起作用的 v1.3 内容一致原版弱先验。9 点控制网格最终重采样为相机可用的 33 点 LUT。
+
+Standard 表为 129 点，V-Log 主表为 257 点，暗部细化表为 17 点。正向采样使用 SILKYPIX 的三线性插值、odd/even 表的中点混合，并在三个通道均低于主表 `1/64` domain 时使用暗部表。
 
 | 组 | V-Log domain max | Shadow domain max |
 |---|---:|---:|
@@ -77,24 +79,24 @@ Standard 表为 129 点，V-Log 主表为 257 点，暗部细化表为 17 点。
 | L008 | 8.0 | 0.125 |
 | L009 | 4.0 | 0.0625 |
 
-### 公共 V-Log 输出校正
+### 固定 V-Log 终点与受控约束
 
-所有转换 LUT 都在各自机型专用的解码表伪逆之后使用同一套实测对手色度校正。
-这是输出端步骤：Standard 反解仍然随机型变化，但终点是同一套固定的 Panasonic
-V-Log/V-Gamut 编码。受正则约束的校正会保持所有严格中性 RGB 不变，并在最终
-`[0,1]` 裁切前保持 RGB 平均码值；它没有使用硬性的逐通道 V-Log 下限。
+每张文件都由对应机型组自己的 Standard/V-Log 前向表独立拟合；S1RII LUT 不会
+复制给其它机型。但所有拟合都以同一套固定 Panasonic V-Log/V-Gamut 编码为终点，
+并共享 S1RII 受控终点配对。这取代了 v1.5 的对手色度输出补丁；v1.6 不再叠加
+独立的拟合后补色。
 
-S1RII 固件 1.5 的三档曝光色卡实拍表明，未校正输出会让高饱和青色产生不合理
-的低红通道。GitHub issue #12 中另有 S9 用户在只启用转换 LUT 时报告相同的蓝/青
-异常，因此有依据把公共终点校正扩展到 L007 以外的机型。
+受控数据包含四档曝光下 72 个 SpyderCHECKR 24 彩色色块，以及 +1/+2 EV 的
+20,519 个配准场景样本；四档真人手部场景全部留出。相对机内原生 V-Log，青色色块
+平均 RGB 距离在 V-Log 中为 `0.00423`、经过 Classic Neg 后为 `0.01225`；v1.5
+分别为 `0.04571` 和 `0.08173`。完全留出的真人手部由 `0.02135`/`0.05644`
+改善到 `0.00392`/`0.00961`。
 
-按曝光留一的色卡验证中，青色平均 RGB 误差从 `0.1431` 降至 `0.0652`。另一组
-九对独立实拍中，青色误差从 `0.0689` 降至 `0.0402`，整体平均 RGB 误差也从
-`0.01748` 降至 `0.01594`。系数、约束和验证指标记录在
-[`Calibration/PanasonicVLogOutput.json`](Calibration/PanasonicVLogOutput.json)，
-带源文件哈希校验的全机型复现命令为
-`Tools/apply_panasonic_vlog_output_correction.py --all`。对当前已校正的发布文件运行时，
-该命令只会校验并跳过；要重新生成，应通过 `--input-root` 指向未校正的 v1.3 包。
+带哈希锁定的锚点、拟合参数、源/输出哈希、逐机型报告和完整受控结果见
+[`Calibration/PanasonicForwardPairGlobalFit.json`](Calibration/PanasonicForwardPairGlobalFit.json)
+与 [`Calibration/S1RIIControlledValidation.json`](Calibration/S1RIIControlledValidation.json)。
+提供 SILKYPIX 解码表和 v1.3 Panasonic 包后，`Tools/rebuild_panasonic_forward_pairs.py`
+可一次重建全部 10 张适配器。
 
 在相同名义 ISO、光圈和快门下，本次验证的原生 V-Log RAW 信号约为 Standard
 RAW 的 `0.397x`，相差约 `1.33` 档。这属于采集/增益路径差异；输出 LUT 无法复制
@@ -102,15 +104,15 @@ RAW 的 `0.397x`，相差约 `1.33` 档。这属于采集/增益路径差异；�
 
 ## 对照样张
 
-[`Samples/Panasonic-Standard/README_zh-CN.md`](../../Samples/Panasonic-Standard/README_zh-CN.md) 包含三种风格的双 LUT/单 LUT 等价性对比、全分辨率误差，以及 Standard ISO 4000 与原生 V-Log ISO 5000 的真实拍摄路径参考。
+[`Samples/Panasonic-Standard/README_zh-CN.md`](../../Samples/Panasonic-Standard/README_zh-CN.md) 包含两种风格的双 LUT/单 LUT 全分辨率等价性对比，以及 Standard/原生 V-Log 受控对照。
 
 ## 限制
 
-- Standard 已经裁掉的高光、饱和色和动态范围无法由 LUT 恢复；这里使用的是规范化伪逆。
+- Standard 已经裁掉的高光、饱和色和动态范围无法由 LUT 恢复；歧义输入只能得到全局正则化的条件估计。
 - 结果只适用于 Panasonic `Standard` 照片格调，不适用于 Natural、Cinelike、709 Like 或相机内额外调整后的不同曲线。
 - 双 LUT 路径比单个 33 点合并 LUT 少一次重新采样，通常是支持机型上的首选。
 - Panasonic 没有公开相机 `.cube` 的插值算法。文件使用 33 点以降低不同插值实现造成的误差。
-- 公共校正已在 DC-S1RM2 固件 1.5 上完成定量验证，并有 S9 的定性实拍佐证；其它机型虽然使用同一固定 V-Log 终点，仍待补充配对受控实拍。
+- 公共终点约束已在 DC-S1RM2 固件 1.5 上完成定量验证，并有 S9 的定性实拍佐证；其它机型保留各自前向表，但仍待补充对应机型的受控配对实拍。
 
 官方参考：
 

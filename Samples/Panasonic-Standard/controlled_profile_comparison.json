@@ -1,110 +1,78 @@
 {
   "camera": "Panasonic DC-S1RM2 / S1RII",
   "firmware": "1.5",
-  "standard_hif": "P1024418.HIF",
-  "native_vlog_hif": "P1024415.HIF",
+  "release": "v1.6",
+  "method": "global forward-pair fit using the model-specific L007 Standard and V-Log maps",
+  "full_report": "Luts/Panasonic-Standard/Calibration/S1RIIControlledValidation.json",
   "capture": {
     "iso": 800,
     "aperture": 5.6,
-    "shutter_seconds": 0.02,
-    "white_balance": "fixed manual",
-    "standard_timestamp": "2026-08-17T00:54:15",
-    "native_vlog_timestamp": "2026-08-17T00:53:58"
-  },
-  "registration_warp_native_vlog_to_standard": [
-    [
-      0.9999999403953552,
-      -0.0003504083142615855,
-      0.736417829990387
+    "white_balance": "fixed custom white balance",
+    "chart_exposures": [
+      "0 EV",
+      "+1 EV",
+      "+2 EV",
+      "+3 EV"
     ],
-    [
-      0.0003504083142615855,
-      0.9999999403953552,
-      0.35603681206703186
-    ]
-  ],
-  "raw_vlog_code_space": {
-    "direct": {
-      "stable": {
-        "pixel_count": 872366,
-        "mean_rgb_distance": 0.0691701684229933,
-        "mean_absolute_channel": 0.03680824536237771,
-        "p95_rgb_distance": 0.12872404152848035
-      },
-      "cyan": {
-        "pixel_count": 5902,
-        "mean_rgb_distance": 0.08897642660077715,
-        "mean_absolute_channel": 0.04372496621308341,
-        "p95_rgb_distance": 0.16343241478949114
-      },
-      "red": {
-        "pixel_count": 107249,
-        "mean_rgb_distance": 0.10312285901238247,
-        "mean_absolute_channel": 0.05774683419204206,
-        "p95_rgb_distance": 0.13474757033871254
-      }
-    },
-    "after_median_rgb_offset_alignment": {
-      "stable": {
-        "pixel_count": 872366,
-        "mean_rgb_distance": 0.05653542015187454,
-        "mean_absolute_channel": 0.029493142288607933,
-        "p95_rgb_distance": 0.10779131435136552
-      },
-      "cyan": {
-        "pixel_count": 5902,
-        "mean_rgb_distance": 0.06159301676678621,
-        "mean_absolute_channel": 0.03092660011407222,
-        "p95_rgb_distance": 0.1167483601812244
-      },
-      "red": {
-        "pixel_count": 107249,
-        "mean_rgb_distance": 0.08517801197869054,
-        "mean_absolute_channel": 0.03991757539080142,
-        "p95_rgb_distance": 0.11735697518999365
-      }
+    "displayed_scene": {
+      "exposure": "+2 EV",
+      "shutter": "1/13",
+      "standard_hif": "P1024433.HIF",
+      "native_vlog_hif": "P1024430.HIF"
     }
   },
-  "classic_neg_output": {
-    "direct": {
-      "stable": {
-        "pixel_count": 872366,
-        "mean_rgb_distance": 0.04580163700194267,
-        "mean_absolute_channel": 0.02254185736682984,
-        "p95_rgb_distance": 0.09776964367722235
-      },
-      "cyan": {
-        "pixel_count": 5902,
-        "mean_rgb_distance": 0.08659521976724237,
-        "mean_absolute_channel": 0.04353980419874773,
-        "p95_rgb_distance": 0.1596037096883034
-      },
-      "red": {
-        "pixel_count": 107249,
-        "mean_rgb_distance": 0.09120091519064129,
-        "mean_absolute_channel": 0.04951203244661223,
-        "p95_rgb_distance": 0.13751869950422885
-      }
+  "evaluation": "one scalar neutral-derived V-Log code offset per exposure; no opponent-colour alignment",
+  "all_exposure_chart_mean_rgb_distance": {
+    "v1.3_original": {
+      "all_colour_vlog": 0.092324709213228,
+      "all_colour_classic_neg": 0.1689576973548329,
+      "cyan_vlog": 0.10411594294267917,
+      "cyan_classic_neg": 0.3195301520739445
     },
-    "after_median_rgb_offset_alignment": {
-      "stable": {
-        "pixel_count": 872366,
-        "mean_rgb_distance": 0.030511691312308072,
-        "mean_absolute_channel": 0.014946855582824404,
-        "p95_rgb_distance": 0.07521566935742666
-      },
-      "cyan": {
-        "pixel_count": 5902,
-        "mean_rgb_distance": 0.06694624994145788,
-        "mean_absolute_channel": 0.03350667638046123,
-        "p95_rgb_distance": 0.12470982685604427
-      },
-      "red": {
-        "pixel_count": 107249,
-        "mean_rgb_distance": 0.06858077083160212,
-        "mean_absolute_channel": 0.035427703423796,
-        "p95_rgb_distance": 0.10763845868979993
-      }
+    "v1.5": {
+      "all_colour_vlog": 0.07293066286794235,
+      "all_colour_classic_neg": 0.13269712098833653,
+      "cyan_vlog": 0.0457060200238704,
+      "cyan_classic_neg": 0.08172562944872067
+    },
+    "v1.6": {
+      "all_colour_vlog": 0.003346087283199054,
+      "all_colour_classic_neg": 0.005075254096666291,
+      "cyan_vlog": 0.004231814760790533,
+      "cyan_classic_neg": 0.012254746936208632
     }
-  }
+  },
+  "fully_held_out_hand_mean_rgb_distance": {
+    "v1.3_original": {
+      "vlog": 0.021801053776888207,
+      "classic_neg": 0.03228456942518075
+    },
+    "v1.5": {
+      "vlog": 0.021345822225938546,
+      "classic_neg": 0.05643854831836664
+    },
+    "v1.6": {
+      "vlog": 0.003917645589915857,
+      "classic_neg": 0.00961162636306457
+    }
+  },
+  "displayed_plus2_scene_rois": {
+    "doll_upper_arm": {
+      "vlog_median_rgb_distance": 0.0025503148028673153,
+      "classic_neg_median_rgb_distance": 0.004540660316751473
+    },
+    "doll_forearm": {
+      "vlog_median_rgb_distance": 0.0034203540922850277,
+      "classic_neg_median_rgb_distance": 0.005367678658058112
+    },
+    "doll_thigh": {
+      "vlog_median_rgb_distance": 0.0024362653112297433,
+      "classic_neg_median_rgb_distance": 0.0030866386645723824
+    },
+    "doll_lower_leg": {
+      "vlog_median_rgb_distance": 0.0008413700416986475,
+      "classic_neg_median_rgb_distance": 0.0026420880223873176
+    }
+  },
+  "note": "All four hand-scene exposures were excluded from fitting. Standard clipping and the native V-Log acquisition/gain path remain irreversible."
 }

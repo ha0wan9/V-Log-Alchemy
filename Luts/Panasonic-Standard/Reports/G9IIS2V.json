@@ -1,196 +1,200 @@
 {
-  "method": "coarse global search plus bounded damped Gauss-Newton pseudo-inverse, followed by a shared controlled-capture V-Log output correction",
-  "standard_cube": "decoded/L00301.rgb16",
-  "vlog_cube": "decoded/L00327.rgb16",
+  "method": "global regularized forward-pair regression; no pointwise Standard inverse",
+  "standard_map": "decoded/L00301.rgb16",
+  "vlog_map": "decoded/L00327.rgb16",
   "standard_map_b": "decoded/L00302.rgb16",
   "vlog_map_b": "decoded/L00328.rgb16",
   "vlog_shadow_map": "decoded/L00331.rgb16",
   "vlog_shadow_map_b": "decoded/L00332.rgb16",
+  "output_cube": "Conversion/G9IIS2V.cube",
+  "solve_size": 9,
+  "output_size": 33,
+  "samples": 300000,
+  "uniform_samples": 0,
+  "correlated_samples": 300000,
+  "uniform_fraction": 0.0,
+  "neutral_samples": 4097,
+  "neutral_weight": 20.0,
+  "smoothness": 0.01,
+  "prior_cube": "v1.3/Conversion/G9IIS2V.cube",
+  "prior_weight": 1.0,
+  "prior_coverage_scale": 0.01,
+  "standard_domain_max": 1.0,
+  "vlog_domain_max": 4.0,
   "vlog_shadow_domain_max": 0.0625,
   "pair_blend": 0.5,
-  "interpolation": "trilinear",
-  "output_cube": "Conversion/G9IIS2V.cube",
-  "standard_size": 129,
-  "vlog_size": 257,
-  "output_size": 33,
-  "standard_internal_domain_min": [
-    0.0,
-    0.0,
-    0.0
-  ],
-  "standard_internal_domain_max": [
-    1.0,
-    1.0,
-    1.0
-  ],
-  "vlog_internal_domain_min": [
-    0.0,
-    0.0,
-    0.0
-  ],
-  "vlog_internal_domain_max": [
-    4.0,
-    4.0,
-    4.0
-  ],
-  "coarse_inverse_rgb_euclidean_code_error": {
-    "mean": 0.1193846854756836,
-    "rmse": 0.14018914795215726,
-    "p50": 0.10683610506886122,
-    "p95": 0.26052556295048906,
-    "p99": 0.3216244574351191,
-    "max": 0.40253700652292174
-  },
-  "refined_inverse_before_canonicalization_rgb_euclidean_code_error": {
-    "mean": 0.020443428443513368,
-    "rmse": 0.04721665279671243,
-    "p50": 3.2910624207201555e-12,
-    "p95": 0.125,
-    "p99": 0.17853262532855668,
-    "max": 0.28486800689990865
-  },
-  "final_inverse_rgb_euclidean_code_error": {
-    "mean": 0.020296570239097908,
-    "rmse": 0.04696224093690874,
-    "p50": 3.6009259697146097e-12,
-    "p95": 0.12500007228717128,
-    "p99": 0.17811917014848158,
-    "max": 0.28486800689990865
-  },
-  "nodes_with_locally_nonunique_preimages": 7147,
-  "inverse_fraction_above_1_over_1023": 0.2616801625066088,
-  "inverse_fraction_above_1_over_255": 0.25288699668864956,
-  "neutral_axis_constraint": {
-    "diagonal_node_max_channel_spread_before": 0.0183092476088611,
-    "diagonal_node_max_channel_spread_after": 0.0,
-    "standard_code_0_45_vlog_mean": 0.4222331198553244
-  },
-  "pre_correction_unclipped_vlog_output_min": [
-    0.0,
-    0.0,
-    0.000296188809178141
-  ],
-  "pre_correction_unclipped_vlog_output_max": [
-    1.0,
-    0.8314970917839133,
-    0.7466284679595634
-  ],
-  "pre_correction_output_was_clipped_to_0_1": true,
-  "pre_correction_paired_pipeline_validation": {
-    "sample_count": 20000,
-    "rgb_euclidean_code_error": {
-      "mean": 0.0594573325639628,
-      "rmse": 0.09575790155858922,
-      "p50": 0.02827698425877921,
-      "p95": 0.23888475020758668,
-      "p99": 0.3078979656934932,
-      "max": 0.5193658205701523
-    },
-    "channel_absolute_code_error": {
-      "mean": 0.02750754142340132,
-      "rmse": 0.05528585024188517,
-      "p50": 0.007486842245918168,
-      "p95": 0.12961261128859597,
-      "p99": 0.23697922826382767,
-      "max": 0.4477103109248517
-    },
-    "channel_absolute_10bit_lsb_error": {
-      "mean": 28.14021487613955,
-      "rmse": 56.557424797448526,
-      "p50": 7.659039617574287,
-      "p95": 132.59370134823368,
-      "p99": 242.4297505138957,
-      "max": 458.0076480761233
-    },
-    "fraction_standard_near_0_or_1": 0.75365,
-    "unclipped_rgb_euclidean_code_error": {
-      "mean": 0.03267735948199284,
-      "rmse": 0.059236696820893574,
-      "p50": 0.01229372032906777,
-      "p95": 0.1368282538239655,
-      "p99": 0.24038814698861047,
-      "max": 0.397405902890689
-    },
-    "clipped_rgb_euclidean_code_error": {
-      "mean": 0.06821105958412242,
-      "rmse": 0.10497564393650358,
-      "p50": 0.03474227524396218,
-      "p95": 0.2533131037741155,
-      "p99": 0.31648928167157886,
-      "max": 0.5193658205701523
-    },
-    "neutral_ramp_channel_absolute_code_error": {
-      "mean": 0.0014738113343698471,
-      "rmse": 0.0023833439040877257,
-      "p50": 0.000974279347708773,
-      "p95": 0.003973198581378956,
-      "p99": 0.004940813751887388,
-      "max": 0.03484653872780877
-    },
-    "neutral_ramp_channel_absolute_10bit_lsb_error": {
-      "mean": 1.5077089950603537,
-      "rmse": 2.4381608138817437,
-      "p50": 0.9966877727060748,
-      "p95": 4.064582148750672,
-      "p99": 5.0544524681807985,
-      "max": 35.64800911854837
-    },
-    "correlated_source_rgb_euclidean_code_error": {
-      "log_rgb_sigma_0.05": {
-        "mean": 0.0029002013676215953,
-        "rmse": 0.0048094595475171795,
-        "p50": 0.001873456428702739,
-        "p95": 0.008405064325564426,
-        "p99": 0.016477993972487455,
-        "max": 0.11324497694067598
-      },
-      "log_rgb_sigma_0.1": {
-        "mean": 0.004100080278684782,
-        "rmse": 0.010652234841343516,
-        "p50": 0.0015601663839031397,
-        "p95": 0.014852270952443257,
-        "p99": 0.03191401039336826,
-        "max": 0.341128300835027
-      },
-      "log_rgb_sigma_0.2": {
-        "mean": 0.010474721609770475,
-        "rmse": 0.027704288944875876,
-        "p50": 0.002608909868807782,
-        "p95": 0.04028382454390414,
-        "p99": 0.11706530752742003,
-        "max": 0.3435994439543008
+  "anchor_weight_scale": 100.0,
+  "cg_iterations": 1000,
+  "cg_tolerance": 1e-07,
+  "random_seed": 20260817,
+  "camera_pair_anchors": [
+    {
+      "path": "Calibration/PanasonicForwardPairAnchors.npz",
+      "sample_count": 20591,
+      "weight_sum": 482380.0,
+      "rgb_error": {
+        "mean": 0.005670457967601662,
+        "rmse": 0.008573539569760898,
+        "p50": 0.004110007563335647,
+        "p95": 0.014711692196296238,
+        "p99": 0.030670615617145423,
+        "max": 0.12935197891460984
       }
     }
+  ],
+  "fit": {
+    "channel_solvers": [
+      {
+        "iterations": 319,
+        "converged": true,
+        "initial_residual_norm": 2476.3704315375494,
+        "final_residual_norm": 0.0002096917451397407,
+        "relative_residual_norm": 8.467705092470578e-08
+      },
+      {
+        "iterations": 307,
+        "converged": true,
+        "initial_residual_norm": 1772.5986849574028,
+        "final_residual_norm": 0.0001497511458692469,
+        "relative_residual_norm": 8.448113334397829e-08
+      },
+      {
+        "iterations": 307,
+        "converged": true,
+        "initial_residual_norm": 1395.165988721008,
+        "final_residual_norm": 0.00011403626669812976,
+        "relative_residual_norm": 8.173670202688237e-08
+      }
+    ],
+    "node_data_diagonal": {
+      "mean": 394.9833609209502,
+      "rmse": 1845.7990926651967,
+      "p50": 12.21663066834274,
+      "p95": 1626.650782296294,
+      "p99": 4995.891554409658,
+      "max": 40401.62024862633
+    },
+    "node_prior_diagonal": {
+      "mean": 0.20788435871807842,
+      "rmse": 0.4464467062173698,
+      "p50": 0.0,
+      "p95": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+    },
+    "node_weighted_coverage": {
+      "mean": 1185.6241426611814,
+      "rmse": 3929.773438409487,
+      "p50": 103.29813289269468,
+      "p95": 5608.202284529415,
+      "p99": 16193.879279042603,
+      "max": 65869.73881225823
+    },
+    "unsupported_node_fraction": 0.15775034293552812,
+    "training_rgb_error": {
+      "mean": 0.007870238903013594,
+      "rmse": 0.01152693596949454,
+      "p50": 0.005351195774936185,
+      "p95": 0.024529667852272532,
+      "p99": 0.044258762999616195,
+      "max": 0.17296596048135215
+    }
   },
-  "empirical_output_chroma_correction": {
-    "calibration": "Calibration/PanasonicVLogOutput.json",
-    "target": "fixed Panasonic V-Log/V-Gamut endpoint",
-    "method": "mean_preserving_opponent_chroma_polynomial",
-    "strength": 0.8,
-    "neutral_axis_preserved": true,
-    "mean_code_preserved_before_final_clipping": true,
-    "corrected_output_min": [
-      0.0886826198802809,
-      0.10994510193483541,
-      0.0
-    ],
-    "corrected_output_max": [
-      1.0,
-      0.6774114966,
-      0.6774114966
-    ],
-    "final_clipped_channel_fraction": 0.0019014757306768325,
-    "validation_status": {
-      "status": "fixed_endpoint_extrapolation",
-      "controlled_model_pair_pending": true
+  "neutral_axis_constraint": {
+    "diagonal_node_max_channel_spread_before": 0.011723053813954956,
+    "diagonal_node_max_channel_spread_after": 0.0
+  },
+  "unclipped_output_min": [
+    0.004463335947718347,
+    0.00039570024273614425,
+    0.04083766598829609
+  ],
+  "unclipped_output_max": [
+    0.9848248889271024,
+    0.8016145927290542,
+    0.6956667370276464
+  ],
+  "output_clipped_to_0_1": true,
+  "validation": {
+    "sample_count": 20000,
+    "rgb_error": {
+      "mean": 0.007779941493624224,
+      "rmse": 0.011364247238443882,
+      "p50": 0.005173407427347109,
+      "p95": 0.024675064828012756,
+      "p99": 0.04140048829280748,
+      "max": 0.10208425721843531
+    },
+    "clipped_fraction": 0.2208,
+    "correlated_rgb_error": {
+      "mean": 0.007779941493624224,
+      "rmse": 0.011364247238443882,
+      "p50": 0.005173407427347109,
+      "p95": 0.024675064828012756,
+      "p99": 0.04140048829280748,
+      "max": 0.10208425721843531
+    },
+    "unclipped_rgb_error": {
+      "mean": 0.005900660378438436,
+      "rmse": 0.00846106391377378,
+      "p50": 0.004186082735099742,
+      "p95": 0.01632995471322655,
+      "p99": 0.03363082958494829,
+      "max": 0.09390451354224748
+    },
+    "clipped_rgb_error": {
+      "mean": 0.01441189731315668,
+      "rmse": 0.01822806118642308,
+      "p50": 0.010865213387890357,
+      "p95": 0.035537435852758016,
+      "p99": 0.05510125531038798,
+      "max": 0.10208425721843531
+    }
+  },
+  "prior_validation": {
+    "sample_count": 20000,
+    "rgb_error": {
+      "mean": 0.0057827726807185426,
+      "rmse": 0.016958241655417473,
+      "p50": 0.0018468411976502513,
+      "p95": 0.02119114264068487,
+      "p99": 0.05734859061705335,
+      "max": 0.3434861807026138
+    },
+    "clipped_fraction": 0.2208,
+    "correlated_rgb_error": {
+      "mean": 0.0057827726807185426,
+      "rmse": 0.016958241655417473,
+      "p50": 0.0018468411976502513,
+      "p95": 0.02119114264068487,
+      "p99": 0.05734859061705335,
+      "max": 0.3434861807026138
+    },
+    "unclipped_rgb_error": {
+      "mean": 0.004059082633527254,
+      "rmse": 0.016714256237130274,
+      "p50": 0.0012671366693679546,
+      "p95": 0.012064138809826598,
+      "p99": 0.047736588062567,
+      "max": 0.3434861807026138
+    },
+    "clipped_rgb_error": {
+      "mean": 0.011865649876241424,
+      "rmse": 0.017792545855602263,
+      "p50": 0.008065745829455028,
+      "p95": 0.03495121967776133,
+      "p99": 0.06536861325992051,
+      "max": 0.2582683685240871
     }
   },
   "limitations": [
-    "Standard clipping/folding destroys source information; the inverse is only a canonical pseudo-inverse.",
-    "Errors on clipped Standard values cannot be eliminated by increasing LUT resolution.",
-    "The decoded-map pseudo-inverse is valid only at the exact camera pipeline point represented by both input LUTs.",
-    "SILKYPIX forward maps were sampled with the selected interpolation method.",
-    "Panasonic does not publish the in-camera .cube interpolation method; 33-point output limits the difference.",
-    "The shared output correction has controlled quantitative validation on S1RII; other model groups retain the same fixed V-Log endpoint but need matched model-specific capture validation."
-  ]
+    "Standard clipping is many-to-one; the fitted value is a globally regularized conditional estimate.",
+    "The source distribution controls the estimate in ambiguous regions.",
+    "An output LUT cannot reproduce native V-Log acquisition gain, noise, or highlight headroom."
+  ],
+  "release_fit": {
+    "package_version": "1.6",
+    "training_camera": "DC-S1RM2 firmware 1.5",
+    "endpoint": "fixed Panasonic V-Log/V-Gamut"
+  }
 }

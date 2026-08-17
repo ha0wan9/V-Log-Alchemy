@@ -1,7 +1,7 @@
 {
   "camera": "Panasonic DC-S1RM2 / S1RII",
-  "release": "v1.5",
-  "calibration": "Luts/Panasonic-Standard/Calibration/PanasonicVLogOutput.json",
+  "release": "v1.6",
+  "calibration": "Luts/Panasonic-Standard/Calibration/PanasonicForwardPairGlobalFit.json",
   "standard_raw": {
     "file": "P1013120.RW2",
     "iso": 4000,
@@ -23,16 +23,16 @@
       "baked_std_lut": "Samples/Panasonic-Standard/Generated-LUTs/CNEGSTD.cube",
       "metrics": {
         "channel_sample_count": 132519168,
-        "mean_absolute_code_error": 0.002775839788478341,
-        "rmse_code_error": 0.005621852398291743,
-        "p95_absolute_code_error": 0.012865,
-        "p99_absolute_code_error": 0.015413,
-        "max_absolute_code_error": 0.27135044182601087,
-        "mean_absolute_8bit_lsb": 0.707839146061977,
-        "p95_absolute_8bit_lsb": 3.280575,
-        "p99_absolute_8bit_lsb": 3.930315,
-        "mean_absolute_10bit_lsb": 2.839684103613343,
-        "p99_absolute_10bit_lsb": 15.767498999999999
+        "mean_absolute_code_error": 0.0006018220916647215,
+        "rmse_code_error": 0.0008730399218062702,
+        "p95_absolute_code_error": 0.0019226367589837492,
+        "p99_absolute_code_error": 0.002883955138475624,
+        "max_absolute_code_error": 0.016692067456843374,
+        "mean_absolute_8bit_lsb": 0.15346463337450397,
+        "p95_absolute_8bit_lsb": 0.49027237354085607,
+        "p99_absolute_8bit_lsb": 0.7354085603112841,
+        "mean_absolute_10bit_lsb": 0.6156639997730101,
+        "p99_absolute_10bit_lsb": 2.9502861066605632
       }
     },
     "Leica-Classic": {
@@ -41,16 +41,16 @@
       "baked_std_lut": "Samples/Panasonic-Standard/Generated-LUTs/LEICASTD.cube",
       "metrics": {
         "channel_sample_count": 132519168,
-        "mean_absolute_code_error": 0.001934351920833913,
-        "rmse_code_error": 0.00445743511087531,
-        "p95_absolute_code_error": 0.008365,
-        "p99_absolute_code_error": 0.012912,
-        "max_absolute_code_error": 0.2108019117611739,
-        "mean_absolute_8bit_lsb": 0.4932597398126478,
-        "p95_absolute_8bit_lsb": 2.133075,
-        "p99_absolute_8bit_lsb": 3.29256,
-        "mean_absolute_10bit_lsb": 1.978842015013093,
-        "p99_absolute_10bit_lsb": 13.208976
+        "mean_absolute_code_error": 0.0005771692379817105,
+        "rmse_code_error": 0.0009172169599671533,
+        "p95_absolute_code_error": 0.0020294499122606243,
+        "p99_absolute_code_error": 0.003295948729686427,
+        "max_absolute_code_error": 0.01906925811859852,
+        "mean_absolute_8bit_lsb": 0.14717815568533618,
+        "p95_absolute_8bit_lsb": 0.5175097276264592,
+        "p99_absolute_8bit_lsb": 0.8404669260700389,
+        "mean_absolute_10bit_lsb": 0.5904441304552899,
+        "p99_absolute_10bit_lsb": 3.371755550469215
       }
     }
   },

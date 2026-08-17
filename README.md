@@ -34,11 +34,11 @@ The resulting `.cube` files can be directly loaded into Panasonic cameras (like 
 
 The original creative LUTs in this repository are designed for **Panasonic V-Log / V-Gamut** input. v1.3 adds model-specific Panasonic Standard input adapters.
 
-### Panasonic Standard Input (v1.3; corrected in v1.5)
+### Panasonic Standard Input (globally rebuilt in v1.6)
 
 `Luts/Panasonic-Standard/Conversion` contains 33-point `Standard -> V-Log` adapters for GH6, S5II/S5IIX, G9II, GH7, S9, S1IIE, S1RII, S1II, and DC-L10.
 
-Because every adapter targets the same fixed V-Log/V-Gamut endpoint, the measured neutral-preserving output correction is enabled for all listed models. It has controlled quantitative validation on S1RII and matching field evidence on S9; the remaining models still need matched Standard/native-V-Log captures.
+v1.6 replaces the pointwise Standard pseudo-inverse and v1.5 output-colour patch with one global forward-pair fit per model. Every adapter retains its own decoded Standard/V-Log maps while sharing the fixed Panasonic V-Log/V-Gamut endpoint and controlled-camera constraints. S1RII has controlled quantitative validation and S9 has matching field evidence; the remaining models still need model-matched captures.
 
 On dual-LUT cameras, configure My Photo Style as:
 

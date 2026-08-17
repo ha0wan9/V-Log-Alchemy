@@ -55,15 +55,17 @@ S5II and S5IIX share one SILKYPIX mapping but retain separate file aliases. The 
 
 ## Method
 
-The LUTs were derived from paired model-specific forward tables in SILKYPIX Developer Studio 8 SE:
+The LUTs are globally fitted from paired model-specific forward tables in SILKYPIX Developer Studio 8 SE. For shared internal samples `x_i`:
 
 ```text
 Standard RGB = F_standard(internal RGB)
 V-Log RGB    = F_vlog(internal RGB)
-S2V RGB      = F_vlog(pseudo_inverse(F_standard(Standard RGB)))
+fit L so that L(F_standard(x_i)) ~= F_vlog(x_i)
 ```
 
-Standard uses 129-point maps, the V-Log main maps are 257-point, and V-Log shadows use 17-point refinement maps. Baking uses SILKYPIX-style trilinear sampling, the midpoint of the odd/even table pair, and the shadow table when all three channels are below `1/64` of the main domain.
+This solves the complete LUT node lattice in one regularized least-squares objective instead of independently choosing one Standard preimage per output node. The objective includes second-order smoothness, an exact neutral-axis constraint, controlled-camera pairs, and the content-exact v1.3 LUT as a weak prior only at sparsely covered nodes. A 9-point control lattice is resampled to the camera-ready 33-point output.
+
+Standard uses 129-point maps, the V-Log main maps are 257-point, and V-Log shadows use 17-point refinement maps. Forward sampling uses SILKYPIX-style trilinear interpolation, the midpoint of the odd/even table pair, and the shadow table when all three channels are below `1/64` of the main domain.
 
 | Group | V-Log domain max | Shadow domain max |
 |---|---:|---:|
@@ -77,30 +79,27 @@ Standard uses 129-point maps, the V-Log main maps are 257-point, and V-Log shado
 | L008 | 8.0 | 0.125 |
 | L009 | 4.0 | 0.0625 |
 
-### Shared V-Log output correction
+### Fixed V-Log endpoint and controlled constraints
 
-All conversion LUTs add the same measured opponent-chroma correction after
-their model-specific decoded-map pseudo-inverse. This is an output-domain step:
-each Standard inverse remains model-specific, while the destination is the same
-fixed Panasonic V-Log/V-Gamut encoding. The regularized correction preserves
-every exact neutral RGB value and preserves mean RGB code before the final
-`[0,1]` clip; it does not apply a hard per-channel V-Log floor.
+Each file is independently fitted from its own model group's Standard and
+V-Log forward maps; the S1RII cube is not copied to other cameras. All fits do,
+however, target the same fixed Panasonic V-Log/V-Gamut encoding and use the
+same controlled S1RII endpoint pairs. This replaces the v1.5 opponent-chroma
+output patch—there is no separate post-fit colour correction in v1.6.
 
-Controlled S1RII firmware 1.5 captures at three chart exposures showed that the
-uncorrected output could produce an implausibly low red component for saturated
-cyan. An independent S9 report in GitHub issue #12 shows the same blue/cyan
-failure with the conversion LUT alone, supporting use of the common endpoint
-correction beyond L007.
+The controlled set contains 72 chromatic SpyderCHECKR 24 samples across four
+exposures and 20,519 registered scene samples at +1/+2 EV. All four hand-scene
+exposures were excluded from fitting. Against native in-camera V-Log, all-chart
+cyan mean RGB distance is `0.00423` in V-Log and `0.01225` after Classic Neg;
+v1.5 measured `0.04571` and `0.08173`. The fully held-out hand set improves
+from `0.02135`/`0.05644` to `0.00392`/`0.00961`.
 
-Leave-one-exposure-out chart validation reduced cyan mean RGB error from
-`0.1431` to `0.0652`. A separate nine-pair capture set reduced cyan error from
-`0.0689` to `0.0402`, while overall mean RGB error fell from `0.01748` to
-`0.01594`. Coefficients, constraints, and validation metrics are recorded in
-[`Calibration/PanasonicVLogOutput.json`](Calibration/PanasonicVLogOutput.json).
-The hash-locked all-model regeneration step is
-`Tools/apply_panasonic_vlog_output_correction.py --all`. On the published
-corrected files this command verifies and skips them; pass an uncorrected v1.3
-package with `--input-root` to regenerate the outputs.
+The hash-locked anchors, fit settings, source/output hashes, per-model reports,
+and full controlled results are in
+[`Calibration/PanasonicForwardPairGlobalFit.json`](Calibration/PanasonicForwardPairGlobalFit.json)
+and [`Calibration/S1RIIControlledValidation.json`](Calibration/S1RIIControlledValidation.json).
+`Tools/rebuild_panasonic_forward_pairs.py` regenerates all ten adapters when
+given the decoded SILKYPIX maps and a v1.3 Panasonic package.
 
 At identical nominal ISO, aperture, and shutter, the validated native V-Log RAW
 signal was about `0.397x` the Standard RAW signal (about `1.33` stops). This is
@@ -109,15 +108,15 @@ V-Log noise, highlight headroom, or exposure-index behavior.
 
 ## Comparison Samples
 
-[`Samples/Panasonic-Standard/README.md`](../../Samples/Panasonic-Standard/README.md) contains three full-resolution two-LUT/single-LUT equivalence tests plus a native Standard ISO 4000 versus V-Log ISO 5000 capture-path reference.
+[`Samples/Panasonic-Standard/README.md`](../../Samples/Panasonic-Standard/README.md) contains two full-resolution two-LUT/single-LUT equivalence tests and the controlled Standard/native-V-Log comparison.
 
 ## Limits
 
-- Highlights, saturated colors, and dynamic range already clipped by Standard cannot be restored. This is a canonical pseudo-inverse.
+- Highlights, saturated colors, and dynamic range already clipped by Standard cannot be restored. Ambiguous inputs receive a globally regularized conditional estimate.
 - The conversion is only for Panasonic `Standard`, not Natural, Cinelike, 709 Like, or a differently adjusted in-camera curve.
 - The two-LUT path avoids an extra 33-point rebake and is normally preferred on supported cameras.
 - Panasonic does not document the camera's `.cube` interpolation method. A 33-point output reduces interpolation differences.
-- The common correction is quantitatively validated on DC-S1RM2 firmware 1.5 and qualitatively supported on S9. Other model groups use the same fixed V-Log endpoint, but matched controlled captures are still pending.
+- The common endpoint constraints are quantitatively validated on DC-S1RM2 firmware 1.5 and qualitatively supported on S9. Other model groups retain their own forward maps, but matched controlled captures are still pending.
 
 Official references:
 

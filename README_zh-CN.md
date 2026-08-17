@@ -34,11 +34,11 @@
 
 本仓库原有风格 LUT 专为 **Panasonic V-Log / V-Gamut** 输入设计。v1.3 新增按机型生成的 Panasonic Standard 输入适配。
 
-### Panasonic Standard 输入（v1.3；v1.5 校正）
+### Panasonic Standard 输入（v1.6 全局重建）
 
 `Luts/Panasonic-Standard/Conversion` 包含 GH6、S5II/S5IIX、G9II、GH7、S9、S1IIE、S1RII、S1II 和 DC-L10 的 `Standard -> V-Log` 33 点转换 LUT。
 
-由于所有适配器都以同一套固定的 V-Log/V-Gamut 为终点，保持中性轴的实测输出校正已对上述全部机型启用。S1RII 已完成受控定量验证，S9 有相同症状的实拍反馈；其余机型仍需补充对应的 Standard/原生 V-Log 配对验证。
+v1.6 用每个机型独立的全局正向配对拟合取代逐点 Standard 伪逆和 v1.5 输出补色。每种机型仍使用自己的 Standard/V-Log 解码表，但共享固定的 Panasonic V-Log/V-Gamut 终点与受控相机约束。S1RII 已完成受控定量验证，S9 有相同症状的实拍反馈；其余机型仍需补充对应机型的配对验证。
 
 支持双 LUT 的相机应在 My Photo Style 中使用：
 
