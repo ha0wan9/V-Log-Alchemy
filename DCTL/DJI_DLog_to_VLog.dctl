@@ -1,0 +1,66 @@
+// DJI D-Log / D-Gamut  ->  Panasonic V-Log / V-Gamut
+// Lets DJI footage feed every V-Log LUT in this repository.
+//
+// D-Log transfer function: DJI D-Log / D-Gamut white paper.
+// D-Gamut primaries: R(0.710, 0.290) G(0.210, 0.880) B(0.090, -0.080), D65.
+// V-Gamut primaries: R(0.730, 0.280) G(0.165, 0.840) B(0.100, -0.030), D65.
+// Both spaces are D65, so no chromatic adaptation is applied.
+//
+// For D-Log M use the generated Luts/DJI/DJI_DLogM_to_VLog.cube instead:
+// DJI does not publish the D-Log M curve, so it cannot be written in closed form.
+
+// DJI D-Log decode constants
+__CONSTANT__ float dlog_cut = 0.14f;
+__CONSTANT__ float dlog_a = 6.025f;
+__CONSTANT__ float dlog_b = 0.0929f;
+__CONSTANT__ float dlog_c = 0.256663f;
+__CONSTANT__ float dlog_d = 0.584555f;
+__CONSTANT__ float dlog_e = 0.9892f;
+__CONSTANT__ float dlog_f = 0.0108f;
+
+// Panasonic V-Log encode constants
+__CONSTANT__ float vlog_cut = 0.01f;
+__CONSTANT__ float vlog_b = 0.00873f;
+__CONSTANT__ float vlog_c = 0.241514f;
+__CONSTANT__ float vlog_d = 0.598206f;
+
+// D-Gamut (linear) -> V-Gamut (linear), derived from the primaries above.
+__CONSTANT__ float dgamut_to_vgamut[9] = {
+     0.942906656020367f,  0.070242731146910f, -0.013149387167276f,
+     0.023328636605405f,  1.045826271120858f, -0.069154907726263f,
+     0.008056580431169f, -0.072113401158914f,  1.064056820727745f,
+};
+
+__DEVICE__ inline float dlog_to_linear(float in)
+{
+    if (in <= dlog_cut)
+    {
+        return (in - dlog_b) / dlog_a;
+    }
+    return (_powf(10.0f, (in - dlog_d) / dlog_c) - dlog_f) / dlog_e;
+}
+
+__DEVICE__ inline float linear_to_vlog(float in)
+{
+    if (in < vlog_cut)
+    {
+        return 5.6f * in + 0.125f;
+    }
+    return vlog_c * _log10f(in + vlog_b) + vlog_d;
+}
+
+__DEVICE__ float3 transform(int p_Width, int p_Height, int p_X, int p_Y, float p_R, float p_G, float p_B)
+{
+    // 1. D-Log -> linear D-Gamut
+    float r_lin = dlog_to_linear(p_R);
+    float g_lin = dlog_to_linear(p_G);
+    float b_lin = dlog_to_linear(p_B);
+
+    // 2. linear D-Gamut -> linear V-Gamut
+    float r_v = r_lin * dgamut_to_vgamut[0] + g_lin * dgamut_to_vgamut[1] + b_lin * dgamut_to_vgamut[2];
+    float g_v = r_lin * dgamut_to_vgamut[3] + g_lin * dgamut_to_vgamut[4] + b_lin * dgamut_to_vgamut[5];
+    float b_v = r_lin * dgamut_to_vgamut[6] + g_lin * dgamut_to_vgamut[7] + b_lin * dgamut_to_vgamut[8];
+
+    // 3. linear V-Gamut -> V-Log
+    return make_float3(linear_to_vlog(r_v), linear_to_vlog(g_v), linear_to_vlog(b_v));
+}
