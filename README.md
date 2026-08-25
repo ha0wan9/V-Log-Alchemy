@@ -204,6 +204,15 @@ Style reference: [Hasselblad Natural Colour Solution](https://www.hasselblad.com
 
 ---
 
+### 🎞️ Rec.709 Input Looks (for cameras with no log profile)
+*For footage that is already display-referred Rec.709 — DJI Neo 2, phones, action cams in their non-log mode. A highlight-expansion step is inserted before the look, because Rec.709 carries only 2.47 stops above grey while the looks need about 7.*
+
+*   **`Rec709_to_Leica_Classic.cube`**, **`Rec709_to_Leica_Natural.cube`** (and `_65` for post)
+    *   **Accuracy**: Approximation, by construction. The camera's own rendering is not invertible from the outside, so the expansion is a plausible shape rather than the real inverse, and the result is a double render: shadows crush from 256 to 198 distinct output codes. Measured numbers and the rejected shadow fix are in [`Luts/Rec709-Input/README.md`](Luts/Rec709-Input/README.md).
+    *   Any look here can be converted with `Tools/generate_rec709_look.py`. Shooting log, where the camera offers it, remains strictly better.
+
+---
+
 ## 📺 Community Showcase
 
 Check out this amazing side-by-side comparison (Fuji X100V vs. Lumix S5IIX) using **V-Log Alchemy**.

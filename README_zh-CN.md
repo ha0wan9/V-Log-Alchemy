@@ -204,6 +204,15 @@ Panasonic 按 `LUT2(LUT1(image))` 串联应用两层。两层浓度先设为 100
 
 ---
 
+### 🎞️ Rec.709 输入版风格 (给没有 log 的机器)
+*用于已经是显示参考 Rec.709 的素材——DJI Neo 2、手机、动作相机的非 log 模式。风格表之前插入了一段高光反向展开，因为 Rec.709 在中灰之上只有 2.47 档，而这些风格表需要约 7 档。*
+
+*   **`Rec709_to_Leica_Classic.cube`**、**`Rec709_to_Leica_Natural.cube`** (后期请用 `_65` 版本)
+    *   **精度**: 本质是近似。相机自身的渲染无法从外部反解，所以这段展开是一个形状合理的假设而非真正的逆变换；结果是二次渲染，暗部会从 256 级压到 198 级。实测数据以及被否决的暗部修正方案见 [`Luts/Rec709-Input/README.md`](Luts/Rec709-Input/README.md)。
+    *   任意风格表都可以用 `Tools/generate_rec709_look.py` 同样转换。机器如果有 log，拍 log 依然严格更好。
+
+---
+
 ## 📺 社区作品展示 (Community Showcase)
 
 这是使用 **V-Log Alchemy** 完成的对比视频 (富士 X100V vs. Lumix S5IIX)。
