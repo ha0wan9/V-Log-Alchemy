@@ -35,6 +35,70 @@ Exposure lines up on its own, no gain fudge needed: 18% scene grey sits at D-Log
 39.87% and D-Log M 41.65%, and both land on V-Log 0.4232, which is V-Log's own
 18% grey point. D-Log code 1.0 maps to V-Log 0.990, so nothing clips at the top.
 
+### Confidence in the D-Log M curve
+
+The recovery above rests on **one** LUT pairing. DJI ships no second D-Log M
+LUT with a different look for the same camera (the "vivid" D-Log M download for
+the Osmo Nano is byte-identical to the plain Mavic 3 file), so the result cannot
+be cross-validated against an independent pairing. What supports it is indirect:
+the method validates at 0.015 stops on synthetic data, the recovered curve is
+smooth and log-like through the mid range, and the recovered 18% grey (41.65%)
+sits where the format is generally reported to place it.
+
+Treat it as a good measurement, not as vendor math.
+
+## D-Log2: attempted and rejected
+
+The same method was tried on D-Log2, using the Osmo Pocket 4P, which is the only
+camera that ships both formats. **It does not work, and no D-Log2 LUT is
+published here.**
+
+Pocket 4P has two independent look families (plain and vivid), each with a
+D-Log -> Rec.709 and a D-Log2 -> Rec.709 LUT, so for once the cancellation can be
+cross-checked: both pairings must recover the same curve. They do not.
+
+| D-Log2 code | plain pairing | vivid pairing | disagreement |
+| --- | --- | --- | --- |
+| 0.4375 | 0.7823 | 0.7837 | 0.002 stops |
+| 0.6250 | 4.1040 | 3.2383 | 0.342 stops |
+| 0.7500 | 11.1523 | 7.2425 | 0.623 stops |
+| 0.8750 | 34.1082 | 16.1264 | **1.081 stops** |
+
+The disagreement grows systematically with code value, which means DJI's
+D-Log -> 709 and D-Log2 -> 709 renders are not the same look. The look therefore
+does not cancel, and any curve fitted this way is wrong in the highlights.
+
+Two warning signs were visible before the cross-check confirmed it: the recovered
+mid-range slope drifted from 15.6 to 11.3 stops per unit code instead of holding
+constant as a log curve must, and the reference LUT's Rec.709 shoulder saturates
+by D-Log2 code 0.93, so the top 7% of the range inverts to a flat 41.999.
+
+Other notes from the attempt:
+
+- The 65-point and 33-point D-Log2 LUTs give **identical** results (0.0000 stops
+  apart). The bottleneck is the 33-point D-Log reference LUT, so the higher
+  resolution on the source side buys nothing.
+- Pocket 4P's D-Log -> 709 exists in a V1.0 and a V2.0. V1.0 is the one that
+  belongs with the D-Log2 LUTs; pairing with V2.0 gives a much worse
+  log-linearity residual (0.62 vs 0.16 stops).
+
+### What did survive
+
+Below and around grey, the two pairings agree to within about 1% of code value,
+so that part of the curve is cross-validated:
+
+| | plain | vivid |
+| --- | --- | --- |
+| black (linear 0) | 7.00% | 6.26% |
+| 18% grey | 29.91% | 30.47% |
+| +1 stop | 36.28% | 36.47% |
+
+**D-Log2 places 18% grey near 30%**, far below D-Log (39.88%) and D-Log M
+(41.65%), and close to ARRI LogC4 (27.49%). It reserves about 70% of its code
+range above grey, which is the modern wide-headroom log design rather than the
+D-Log / V-Log family. Solving it properly needs either published vendor math or
+a physical characterisation of the camera.
+
 ## Baking a style LUT in (one-LUT workflow)
 
 `--look` composes the conversion with any V-Log style LUT from this repository
