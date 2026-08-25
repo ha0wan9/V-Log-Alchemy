@@ -192,6 +192,18 @@ Panasonic 按 `LUT2(LUT1(image))` 串联应用两层。两层浓度先设为 100
 
 ---
 
+### 🌀 Insta360 影石 (输入适配，不是风格)
+*把影石 I-Log 素材转换成 V-Log / V-Gamut，从而让上面所有 LUT 都能用在影石相机上（Luna Ultra、Ace Pro 2、X5、GO Ultra 等）。*
+
+*   **`Insta360_ILog_to_VLog.cube`** (后期请用 `_65` 版本)
+    *   **风格**: 无。纯技术转换，影石 I-Log / Rec.2020 -> 松下 V-Log / V-Gamut。
+    *   **精度**: 精确，且非逆向。影石在自己的官方 ACES IDT 中公开了 I-Log 传递函数，而 I-Log 的色域就是标准 Rec.2020。由于 Rec.2020 与 V-Gamut 同为 D65 白点，整个转换是单个矩阵，无需色适应（见 `DCTL/Insta360_ILog_to_VLog.dctl`）。
+    *   **已验证**: 用相同基色与 CAT02 重建影石公开的 Rec.2020 -> AP0 矩阵，九个系数全部吻合到 5.9e-11。可运行 `python3 Tools/generate_insta360_vlog.py verify` 复现。
+*   **`Insta360_ILog_to_Leica_Classic.cube`** (后期请用 `_65` 版本)
+    *   烘焙示例：I-Log 一步到位出徕卡 Classic。任意风格 LUT 都可以用 `--look` 同样烘进去，细节见 [`Luts/Insta360/README.md`](Luts/Insta360/README.md)。
+
+---
+
 ## 📺 社区作品展示 (Community Showcase)
 
 这是使用 **V-Log Alchemy** 完成的对比视频 (富士 X100V vs. Lumix S5IIX)。

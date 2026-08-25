@@ -1,3 +1,5 @@
 __pycache__/
 *.py[cod]
 *.dop
+.DS_Store
+__pycache__/

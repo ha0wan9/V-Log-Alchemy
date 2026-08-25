@@ -192,6 +192,18 @@ Style reference: [Hasselblad Natural Colour Solution](https://www.hasselblad.com
 
 ---
 
+### 🌀 Insta360 (Input Adapter, not a look)
+*Converts Insta360 I-Log footage into V-Log / V-Gamut so every LUT above can be used on an Insta360 camera (Luna Ultra, Ace Pro 2, X5, GO Ultra, ...).*
+
+*   **`Insta360_ILog_to_VLog.cube`** (and `_65` for post)
+    *   **Style**: None. Pure technical conversion, Insta360 I-Log / Rec.2020 -> Panasonic V-Log / V-Gamut.
+    *   **Accuracy**: Exact, and not reverse engineered. Insta360 publishes the I-Log transfer function in its own official ACES IDT, and I-Log's gamut is plain Rec.2020. Since Rec.2020 and V-Gamut are both D65, the conversion is a single matrix with no chromatic adaptation (see `DCTL/Insta360_ILog_to_VLog.dctl`).
+    *   **Verified**: rebuilding Insta360's published Rec.2020 -> AP0 matrix from the same primaries and CAT02 reproduces all nine coefficients to 5.9e-11. Run `python3 Tools/generate_insta360_vlog.py verify`.
+*   **`Insta360_ILog_to_Leica_Classic.cube`** (and `_65` for post)
+    *   Baked example: I-Log straight to the Leica Classic look. Any style LUT can be baked the same way with `--look`. Details in [`Luts/Insta360/README.md`](Luts/Insta360/README.md).
+
+---
+
 ## 📺 Community Showcase
 
 Check out this amazing side-by-side comparison (Fuji X100V vs. Lumix S5IIX) using **V-Log Alchemy**.

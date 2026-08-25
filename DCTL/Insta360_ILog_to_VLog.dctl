@@ -1,0 +1,69 @@
+// Insta360 I-Log / Rec.2020  ->  Panasonic V-Log / V-Gamut
+// Lets Insta360 footage feed every V-Log LUT in this repository.
+//
+// Nothing here is reverse engineered. The I-Log transfer function is taken
+// verbatim from Insta360's own ACES IDT, shipped in the official
+// "Insta360 I-Log & ACES Workflow" package as
+// Insta360_I-Log_Rec2020_ACES_IDT_v2.dctl.
+//
+// I-Log's gamut is plain Rec.2020 at D65, and V-Gamut is D65 too, so the
+// conversion is a single matrix with no chromatic adaptation. The vendor IDT
+// carries a CAT02 step only because it targets ACES AP0, whose white point is
+// not D65; routing through AP0 would adapt away from D65 and straight back.
+
+// Insta360 I-Log decode constants (official IDT v2)
+__CONSTANT__ float ilog_cut = 0.154402f;
+__CONSTANT__ float ilog_alpha = 5.77837328f;
+__CONSTANT__ float ilog_beta = 0.09055934f;
+__CONSTANT__ float ilog_delta = 0.623992f;
+__CONSTANT__ float ilog_theta = 0.01f;
+__CONSTANT__ float ilog_eta = 0.280055f;
+
+// Panasonic V-Log encode constants
+__CONSTANT__ float vlog_cut = 0.01f;
+__CONSTANT__ float vlog_b = 0.00873f;
+__CONSTANT__ float vlog_c = 0.241514f;
+__CONSTANT__ float vlog_d = 0.598206f;
+
+// Rec.2020 (linear) -> V-Gamut (linear), both D65.
+// Cross-checked by rebuilding Insta360's published Rec.2020 -> AP0 matrix
+// from the same primaries and CAT02: agreement to 5.9e-11.
+__CONSTANT__ float rec2020_to_vgamut[9] = {
+     0.929854953742952f,  0.012365755314743f,  0.057779290942305f,
+     0.026563199981926f,  0.872136244118332f,  0.101300555899742f,
+     0.007959938082170f,  0.029203166164931f,  0.962836895752899f,
+};
+
+__DEVICE__ inline float ilog_to_linear(float in)
+{
+    if (in < ilog_cut)
+    {
+        return (in - ilog_beta) / ilog_alpha;
+    }
+    return _powf(10.0f, (in - ilog_delta) / ilog_eta) - ilog_theta;
+}
+
+__DEVICE__ inline float linear_to_vlog(float in)
+{
+    if (in < vlog_cut)
+    {
+        return 5.6f * in + 0.125f;
+    }
+    return vlog_c * _log10f(in + vlog_b) + vlog_d;
+}
+
+__DEVICE__ float3 transform(int p_Width, int p_Height, int p_X, int p_Y, float p_R, float p_G, float p_B)
+{
+    // 1. I-Log -> linear Rec.2020
+    float r_lin = ilog_to_linear(p_R);
+    float g_lin = ilog_to_linear(p_G);
+    float b_lin = ilog_to_linear(p_B);
+
+    // 2. linear Rec.2020 -> linear V-Gamut
+    float r_v = r_lin * rec2020_to_vgamut[0] + g_lin * rec2020_to_vgamut[1] + b_lin * rec2020_to_vgamut[2];
+    float g_v = r_lin * rec2020_to_vgamut[3] + g_lin * rec2020_to_vgamut[4] + b_lin * rec2020_to_vgamut[5];
+    float b_v = r_lin * rec2020_to_vgamut[6] + g_lin * rec2020_to_vgamut[7] + b_lin * rec2020_to_vgamut[8];
+
+    // 3. linear V-Gamut -> V-Log
+    return make_float3(linear_to_vlog(r_v), linear_to_vlog(g_v), linear_to_vlog(b_v));
+}
